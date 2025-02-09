@@ -88,7 +88,7 @@ const Hero = () => {
           <h5
             className={`${styles.intro} font-mono font-medium text-indigo-light staggered-reveal`}
           >
-            Hi, I'm
+            Hi, I&apos;m
           </h5>
           <h1 className={`${styles.heroName} text-white text-6xl font-semibold`}>
             <span className={`relative ${styles.emphasize} staggered-reveal`}>
