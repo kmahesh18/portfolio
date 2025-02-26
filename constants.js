@@ -98,14 +98,24 @@ export const SKILLS = {
 
 export const PROJECTS = [
   {
-    name: "Blog Website",
+    name: "VENZO - Blog Website",
     image: "/projects/medium.webp",
     blurImage: "/projects/blur/blog-blur.webp",
     description: "Dynamic blog platform with role-based access control using MERN Stack + Redux",
     gradient: ["#1488CC", "#2B32B2"],
-    url: "#",
-    github: "#",
+    url: "https://venzo.vercel.app/",
+    github: "https://github.com/kmahesh18/VENZO",
     tech: ["react", "redux", "nodejs", "mongodb"],
+  },
+  {
+    name: "ZENKAI - Anime Stream",
+    image: "/projects/airbnb.webp",
+    blurImage: "/projects/blur/anime-blur.webp",
+    description: "Optimized streaming platform with server-side rendering",
+    gradient: ["#ff0099", "#493240"],
+    url: "https://zenkai-ochre.vercel.app/",
+    github: "https://github.com/kmahesh18/anime",
+    tech: ["typescript", "nextjs", "redux"],
   },
   {
     name: "Excelify",
@@ -116,16 +126,6 @@ export const PROJECTS = [
     github: "https://github.com/kmahesh18/xcelifiee-repo",
     url: "#",
     tech: ["react", "nodejs", "express"],
-  },
-  {
-    name: "Anime Stream",
-    image: "/projects/airbnb.webp",
-    blurImage: "/projects/blur/anime-blur.webp",
-    description: "Optimized streaming platform with server-side rendering",
-    gradient: ["#ff0099", "#493240"],
-    url: "https://zenkai-ochre.vercel.app/",
-    github: "https://github.com/kmahesh18/anime",
-    tech: ["typescript", "nextjs", "redux"],
   },
   {
     name: "YTWrap",

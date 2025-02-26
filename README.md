@@ -1,7 +1,7 @@
-# devfolio
+# PortFolio
 
-<a href="https://shubhporwal.me">
-  <img alt="devfolio" src="./public/preview.png" />
+<a href="https://mahesh-zeta.vercel.app/">
+  <img alt="Portfolio" src="./public/preview.png" />
 </a>
 
 <p>
@@ -14,7 +14,7 @@
 
 👨‍🎓 An eye-catching developer Portfolio, Built on NextJS, GSAP, Tailwind and React
 
-### ✨ [Live Demo](http://www.shubhporwal.me/)
+### ✨ [Live Demo](https://mahesh-zeta.vercel.app/)
 
 ## Getting Started
 

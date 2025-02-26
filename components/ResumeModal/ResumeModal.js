@@ -4,6 +4,11 @@ import { IoClose } from "react-icons/io5";
 const ResumeModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
+  const handleResumeClick = () => {
+    window.open("https://drive.google.com/file/d/19FSSKoDYYVzD-LVAL_kRFftf_x5XHfrP/view?usp=drive_link", "_blank");
+    onClose();
+  };
+
   return (
     <AnimatePresence>
       <motion.div
@@ -18,7 +23,7 @@ const ResumeModal = ({ isOpen, onClose }) => {
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
           transition={{ type: "spring", duration: 0.5 }}
-          className="relative w-[90%] h-[90vh] bg-[#111111] rounded-xl p-4"
+          className="relative w-[90%] h-auto bg-[#111111] rounded-xl p-8"
           onClick={(e) => e.stopPropagation()}
         >
           <button
@@ -27,24 +32,17 @@ const ResumeModal = ({ isOpen, onClose }) => {
           >
             <IoClose size={24} />
           </button>
-          <object
-            data="/resume.pdf"
-            type="application/pdf"
-            className="w-full h-full rounded-lg"
-          >
-            <div className="text-white text-center p-4">
-              <p>Unable to display PDF. You can 
-                <a 
-                  href="/resume.pdf" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-purple-500 hover:text-purple-400 ml-1"
-                >
-                  download it here
-                </a>.
-              </p>
-            </div>
-          </object>
+          
+          <div className="text-white text-center">
+            <h2 className="text-2xl mb-4">View Resume</h2>
+            <p className="mb-6">Click below to view my resume on Google Drive</p>
+            <button
+              onClick={handleResumeClick}
+              className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition-colors"
+            >
+              Open Resume
+            </button>
+          </div>
         </motion.div>
       </motion.div>
     </AnimatePresence>

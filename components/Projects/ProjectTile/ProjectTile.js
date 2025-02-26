@@ -3,7 +3,7 @@ import Image from "next/image";
 import { PROJECTS } from "../../../constants";
 import { motion } from "framer-motion";
 
-const ProjectTile = ({ project, gradient }) => {
+const ProjectTile = ({ project, gradient, isActive }) => {
   const projectTile = useRef(null);
 
   return (
@@ -12,16 +12,14 @@ const ProjectTile = ({ project, gradient }) => {
       className="group relative overflow-hidden rounded-2xl bg-[#111111] border-2 border-purple-500/20 hover:border-purple-500/50 transition-all duration-500"
       style={{
         transformStyle: "preserve-3d",
-        transform: "translateZ(0)",
-        transition: "all 0.5s ease-out",
       }}
       whileHover={{ 
-        transform: "translateZ(50px) rotateX(2deg)",
+        transform: "translateZ(30px) rotateX(2deg)",
         boxShadow: "0 0 30px rgba(168,85,247,0.3)",
       }}
     >
-      {/* Project Image with 3D effect */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden">
+      {/* Project Image */}
+      <div className="relative h-36 overflow-hidden"> {/* Reduced height */}
         <Image
           src={project.image}
           alt={project.name}
@@ -33,10 +31,10 @@ const ProjectTile = ({ project, gradient }) => {
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#111111]/50 to-[#111111]" />
       </div>
 
-      {/* Project Info with 3D hover effects */}
-      <div className="p-8 space-y-4 transform transition-transform duration-300 group-hover:translate-z-10">
+      {/* Project Info */}
+      <div className="p-4 space-y-2"> {/* Reduced padding and spacing */}
         <h3 
-          className="text-2xl font-bold transform transition-transform duration-300 group-hover:translate-z-20"
+          className="text-lg font-bold"
           style={{
             background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
             WebkitBackgroundClip: "text",
@@ -46,20 +44,25 @@ const ProjectTile = ({ project, gradient }) => {
           {project.name}
         </h3>
         
-        <p className="text-white text-sm leading-relaxed">
+        <p className="text-gray-400 text-sm line-clamp-2">
           {project.description}
         </p>
 
-        {/* Tech Stack with 3D effect */}
-        <div className="flex flex-wrap gap-2 pt-2">
-          {project.tech.map((tech) => (
+        {/* Tech Stack */}
+        <div className="flex flex-wrap gap-1.5">
+          {project.tech.slice(0, 3).map((tech) => (
             <span
               key={tech}
-              className="text-xs px-3 py-1 rounded-full bg-purple-900/20 text-purple-200 border border-purple-500/30 transform transition-transform duration-300 hover:translate-z-10"
+              className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-200 border border-purple-500/20"
             >
               {tech}
             </span>
           ))}
+          {project.tech.length > 3 && (
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-purple-500/10 text-purple-200">
+              +{project.tech.length - 3}
+            </span>
+          )}
         </div>
 
         {/* Project Links with 3D effect */}
