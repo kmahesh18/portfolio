@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { MENULINKS } from "../../constants";
 import StickyScroll from "./StickyScroll/StickyScroll";
+import { motion } from "framer-motion";
 
 // Function to fetch CodeForces data
 const fetchCodeforcesData = async () => {
@@ -64,6 +65,46 @@ const fetchCodeChefData = async () => {
   }
 };
 
+const InfoCard = ({ title, children }) => (
+  <motion.div
+    className="relative group"
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.5 }}
+  >
+    {/* Ambient Glow Effects */}
+    <div className="absolute -inset-40 bg-gradient-to-r from-[#7913ff]/10 via-violet-500/10 to-[#7913ff]/10 
+      rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-all duration-1000" />
+    
+    {/* Content Container */}
+    <div className="relative max-w-4xl mx-auto">
+      {/* Subtle top line */}
+      <div className="absolute -top-px left-20 right-20 h-px bg-gradient-to-r from-transparent via-[#7913ff]/50 to-transparent" />
+      
+      {/* Main Content Area */}
+      <div className="relative px-6 sm:px-8 py-10">
+        {/* Section Title */}
+        <h2 className="text-2xl sm:text-3xl font-bold mb-10 text-white opacity-90">
+          {title}
+        </h2>
+
+        {/* Content Grid */}
+        <div className="relative">
+          {/* Decorative vertical line */}
+          <div className="absolute top-0 bottom-0 left-1/2 w-px bg-gradient-to-b from-violet-500/50 via-violet-500/20 to-transparent 
+            hidden md:block" />
+          
+          {children}
+        </div>
+      </div>
+
+      {/* Subtle bottom line */}
+      <div className="absolute -bottom-px left-20 right-20 h-px bg-gradient-to-r from-transparent via-[#7913ff]/50 to-transparent" />
+    </div>
+  </motion.div>
+);
+
 const Work = () => {
   const targetSection = useRef(null);
   const [codeforcesData, setCodeforcesData] = useState(null);
@@ -93,133 +134,163 @@ const Work = () => {
   }, []);
 
   return (
-    <section
-      className="w-full relative select-none mt-24"
-      id={MENULINKS[3].ref}
-      ref={targetSection}
-    >
-      {/* Header Section */}
-      <div className="max-w-7xl mx-auto pt-24 pb-8 px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center relative">
-          <h1 
-            className="text-6xl sm:text-7xl lg:text-8xl font-bold text-center relative z-10"
+    <section className="w-full relative select-none bg-black" id={MENULINKS[3].ref} ref={targetSection}>
+      {/* Title Section */}
+      <div className="max-w-5xl mx-auto pt-24 pb-12 px-4">
+        <div className="flex flex-col items-center">
+          <h1 className="text-5xl sm:text-6xl font-bold text-center relative z-10"
             style={{
-              background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+              background: "linear-gradient(135deg, #4AE3B5 0%, #6D28D9 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              backgroundSize: "200% auto",
-              animation: "shine 5s linear infinite",
-            }}
-          >
-            Experience & Work
+            }}>
+            Education & Experience
           </h1>
-          <div className="mt-4 relative z-10">
-            <div className="h-1 w-32 bg-gradient-to-r from-violet-500 to-purple-500 rounded-full"></div>
+          <div className="mt-4">
+            <div className="h-1 w-32 bg-gradient-to-r from-[#7913ff] to-violet-500 rounded-full" />
           </div>
         </div>
       </div>
 
-      {/* Content Section */}
-      <div className="max-w-7xl mx-auto pb-12 px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {/* Education Card */}
-          <div className="group relative bg-[#111111] rounded-2xl p-1">
-            <div className="h-full bg-[#111111] p-8 rounded-xl transition-all duration-500 hover:-translate-y-2">
-              <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-blue-400 to-blue-200 bg-clip-text text-transparent">
-                Education
-              </h3>
-              <div className="text-white space-y-2">
-                <span className="block text-lg font-medium">B.Tech in CSE</span>
-                <span className="block text-gray-300">VNRVJIET (2023-2027)</span>
-                <span className="block">Second Year Student</span>
-                <span className="block text-blue-400 font-medium">CGPA: 9.23/10</span>
-              </div>
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 pb-24">
+        <InfoCard title="Overview">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* Education Section */}
+            <div className="relative">
+              <motion.div 
+                className="space-y-6"
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <h3 className="text-lg font-semibold mb-6 text-[#7913ff]">Education Timeline</h3>
+                <div className="relative pl-6 border-l-2 border-violet-500/30">
+                  <div className="absolute w-3 h-3 bg-[#7913ff] rounded-full -left-[7px] top-2" />
+                  <div className="text-white font-medium">B.Tech in CSE (2023 – 2027)</div>
+                  <div className="text-violet-200">VNR Vignana Jyothi Institute of Engineering and Technology</div>
+                  <div className="text-[#4AE3B5] text-sm mt-1">CGPA: 9.23/10</div>
+                </div>
+                
+                <div className="relative pl-6 border-l-2 border-violet-500/30">
+                  <div className="absolute w-3 h-3 bg-[#7913ff] rounded-full -left-[7px] top-2" />
+                  <div className="text-white font-medium">Intermediate, APBIE (2021 – 2023)</div>
+                  <div className="text-violet-200">Ascent Junior College, Vizag</div>
+                </div>
+                
+                <div className="relative pl-6 border-l-2 border-violet-500/30">
+                  <div className="absolute w-3 h-3 bg-[#7913ff] rounded-full -left-[7px] top-2" />
+                  <div className="text-white font-medium">Secondary Education, CBSE (2021)</div>
+                  <div className="text-violet-200">Nava Bharat Public School, Kothagudem</div>
+                </div>
+              </motion.div>
             </div>
-          </div>
 
-          {/* Activities Card */}
-          <div className="group relative bg-[#111111] rounded-2xl p-1">
-            <div className="h-full bg-[#111111] p-8 rounded-xl transition-all duration-500 hover:-translate-y-2">
-              <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
-                Activities
-              </h3>
-              <ul className="text-white space-y-3">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
-                  Member of Turing Hut Club
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
-                  Active Chess Player
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-purple-400 rounded-full mr-2"></span>
-                  Chess.com Rapid: {chessData ? `${chessData.chess_rapid.last.rating} Rating` : 'Loading...'}
-                </li>
-              </ul>
-            </div>
-          </div>
+            {/* Competitive Programming Section */}
+            <div className="relative">
+              <motion.div 
+                className="space-y-4"
+                initial={{ opacity: 0, x: 20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+              >
+                <h3 className="text-lg font-semibold mb-6 text-[#7913ff]">Competitive Programming</h3>
+                <a href="https://www.codechef.com/users/kmahesh_18" 
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   className="block group/link relative">
+                  <div className="absolute inset-0 bg-violet-500/5 rounded-lg opacity-0 group-hover/link:opacity-100 
+                    transition-all duration-300" />
+                  <div className="relative p-3">
+                    <div className="text-white font-medium group-hover/link:text-[#7913ff] transition-colors">
+                      CodeChef {codeChefData && `• ${codeChefData.stars}`}
+                    </div>
+                    {codeChefData && (
+                      <div className="text-violet-200 text-sm space-y-0.5 mt-1">
+                        <div>Rating: {codeChefData.currentRating}</div>
+                        <div>Global Rank: {codeChefData.globalRank}</div>
+                        <div>Country Rank: {codeChefData.countryRank}</div>
+                      </div>
+                    )}
+                  </div>
+                </a>
 
-          {/* Competitive Profile Card */}
-          <div className="group relative bg-[#111111] rounded-2xl p-1">
-            <div className="h-full bg-[#111111] p-8 rounded-xl transition-all duration-500 hover:-translate-y-2">
-              <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">
-                Competitive Profile
-              </h3>
-              <ul className="text-white space-y-3">
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                  <a href="https://www.codechef.com/users/kmahesh_18" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="hover:text-green-400 transition-colors">
-                    CodeChef: {codeChefData ? (
-                      <>
-                        {codeChefData.stars} ({codeChefData.currentRating})<br/>
-                        <span className="text-gray-300">
-                          • Global Rank: {codeChefData.globalRank}<br/>
-                          • Country Rank: {codeChefData.countryRank}<br/>
-                          • Highest Rating: {codeChefData.highestRating}
-                        </span>
-                      </>
-                    ) : 'Loading...'}
-                  </a>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                  <a href="https://codeforces.com/profile/maheshpro" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="hover:text-green-400 transition-colors">
-                    CodeForces: {codeforcesData ? `${codeforcesData.rating} (${codeforcesData.rank})` : 'Loading...'}
-                  </a>
-                </li>
-                <li className="flex items-center">
-                  <span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
-                  <a href="https://leetcode.com/u/__mahesh18/" 
-                     target="_blank" 
-                     rel="noopener noreferrer"
-                     className="hover:text-green-400 transition-colors">
-                    LeetCode: {leetcodeData ? `${leetcodeData.totalSolved} solved` : 'Loading...'}
-                  </a>
-                </li>
-              </ul>
+                <a href="https://codeforces.com/profile/maheshpro"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="block group/link relative">
+                  <div className="absolute inset-0 bg-violet-500/5 rounded-lg opacity-0 group-hover/link:opacity-100 
+                    transition-all duration-300" />
+                  <div className="relative p-3">
+                    <div className="text-white font-medium group-hover/link:text-[#7913ff] transition-colors">
+                      CodeForces
+                    </div>
+                    {codeforcesData && (
+                      <div className="text-violet-200 text-sm">
+                        Rating: {codeforcesData.rating} ({codeforcesData.rank})
+                      </div>
+                    )}
+                  </div>
+                </a>
+
+                <a href="https://leetcode.com/u/__mahesh18/"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   className="block group/link relative">
+                  <div className="absolute inset-0 bg-violet-500/5 rounded-lg opacity-0 group-hover/link:opacity-100 
+                    transition-all duration-300" />
+                  <div className="relative p-3">
+                    <div className="text-white font-medium group-hover/link:text-[#7913ff] transition-colors">
+                      LeetCode
+                    </div>
+                    {leetcodeData && (
+                      <div className="text-violet-200 text-sm">
+                        Solved: {leetcodeData.totalSolved} • Rank: {leetcodeData.ranking}
+                      </div>
+                    )}
+                  </div>
+                </a>
+
+                <div className="mt-6 pt-4 border-t border-violet-500/20">
+                  <div className="text-white font-medium mb-2">Additional Activities</div>
+                  <div className="text-violet-200 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-[#7913ff] rounded-full" />
+                      <span>Member of Turing Hut Club</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 bg-[#7913ff] rounded-full" />
+                      <span>Active Chess Player</span>
+                    </div>
+                    {chessData && (
+                      <div className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 bg-[#7913ff] rounded-full" />
+                        <span>Chess.com Rapid: {chessData.chess_rapid.last.rating} Rating</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </motion.div>
             </div>
           </div>
-        </div>
+        </InfoCard>
       </div>
 
-      {/* Sticky Scroll Section */}
-      <div className="mt-24">
-        <StickyScroll />
+      {/* Sticky Scroll Section - Pass the data as props */}
+      <div className="relative z-10 mt-8">
+        <StickyScroll 
+          githubData={githubData}
+          codeforcesData={codeforcesData}
+          codeChefData={codeChefData}
+          leetcodeData={leetcodeData}
+        />
       </div>
 
-      <style jsx>{`
-        @keyframes shine {
-          0% { background-position: 200% center; }
-          100% { background-position: -200% center; }
-        }
-      `}</style>
+      {/* Background Effects */}
+      <div className="fixed inset-0 pointer-events-none -z-10">
+        <div className="absolute top-1/4 -left-1/4 w-96 h-96 bg-violet-500/5 rounded-full filter blur-[120px] animate-pulse" />
+        <div className="absolute bottom-1/4 -right-1/4 w-96 h-96 bg-violet-500/5 rounded-full filter blur-[120px] animate-pulse" />
+      </div>
     </section>
   );
 };

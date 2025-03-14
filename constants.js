@@ -153,30 +153,25 @@ export const WORK_CONTENT = [
   {
     title: "GitHub Activity",
     description: "Open Source Contributions & Projects",
-    content: (
-      <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
-          @kmahesh18
+    content: ({ githubData }) => (
+      <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-violet-500/20 hover:border-violet-500/40 transition-all duration-500 group">
+        <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#7913ff] to-violet-300 bg-clip-text text-transparent">
+          GITHUB
         </h3>
         <div className="text-gray-300 space-y-3 text-center">
-          <a href="https://github.com/kmahesh18" target="_blank" rel="noopener noreferrer"
-             className="block hover:text-purple-400 transition-colors">
-            • Public Repositories: 15+<br/>
-            • Total Commits: 200+<br/>
-            • Pull Requests: 20+<br/>
-            • Stars Earned: 10+
-          </a>
+          <a href="https://github.com/kmahesh18" target="_blank" rel="noopener noreferrer">@kmahesh18</a>
+          <p className="block hover:text-[#7913ff] transition-colors">
+            • Public Repositories: {githubData?.public_repos || '15+'}<br></br>
+            • Total Commits: {githubData?.total_commits || '200+'}<br></br>
+            • Pull Requests: {githubData?.public_gists || '20+'}<br></br>
+            • Stars: {githubData?.followers || '10+'}
+          </p>
         </div>
         <div className="mt-6 space-y-4 w-full max-w-md transform group-hover:scale-105 transition-transform duration-500">
           <img 
-            src={`https://ghchart.rshah.org/kmahesh18`} 
-            alt="GitHub Contributions Graph"
-            className="w-full rounded-xl shadow-lg hover:shadow-purple-500/20"
-          />
-          <img
-            src="https://github-readme-streak-stats.herokuapp.com/?user=kmahesh18&theme=dark&hide_border=true"
-            alt="GitHub Streak Stats"
-            className="w-full rounded-xl shadow-lg hover:shadow-purple-500/20"
+            src={`https://ghchart.rshah.org/7913ff/kmahesh18`}
+            alt="GitHub Contributions"
+            className="w-full rounded-xl shadow-lg hover:shadow-[#7913ff]/20"
           />
         </div>
       </div>
@@ -185,44 +180,42 @@ export const WORK_CONTENT = [
   {
     title: "Competitive Programming",
     description: "Active competitive programmer with strong problem-solving skills",
-    content: (
-      <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-gray-900/80 backdrop-blur-sm rounded-2xl border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+    content: ({ codeforcesData, codeChefData, leetcodeData }) => (
+      <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-violet-500/20 hover:border-violet-500/40 transition-all duration-500 group">
+        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-[#7913ff] to-violet-300 bg-clip-text text-transparent">
           Coding Profiles
         </h3>
         <div className="space-y-6 w-full max-w-md">
-          <div className="p-4 rounded-xl bg-gray-800/50 hover:bg-gray-800/70 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-violet-500/10 hover:border-violet-500/30">
             <a href="https://codeforces.com/profile/maheshpro" target="_blank" rel="noopener noreferrer"
-               className="block hover:text-blue-400 transition-colors">
+               className="block hover:text-[#7913ff] transition-colors">
               <span className="text-lg font-semibold">CodeForces (@maheshpro)</span><br/>
               <span className="text-gray-400">
-                • Rating: 1012 (Pupil)<br/>
-                • Problems Solved: ~100<br/>
-                • Max Rating: 1012
+                • Rating: {codeforcesData?.rating || '1012'} ({codeforcesData?.rank || 'Pupil'})<br/>
+                • Max Rating: {codeforcesData?.maxRating || '1012'}
               </span>
             </a>
           </div>
           
-          <div className="p-4 rounded-xl bg-gray-800/50 hover:bg-gray-800/70 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-violet-500/10 hover:border-violet-500/30">
             <a href="https://www.codechef.com/users/kmahesh_18" target="_blank" rel="noopener noreferrer"
-               className="block hover:text-blue-400 transition-colors">
+               className="block hover:text-[#7913ff] transition-colors">
               <span className="text-lg font-semibold">CodeChef (@kmahesh_18)</span><br/>
               <span className="text-gray-400">
-                • Rating: 1439 (2★)<br/>
-                • Problems Solved: 399<br/>
-                • Global Rank: 40338
+                • Rating: {codeChefData?.currentRating || '1439'} ({codeChefData?.stars || '2★'})<br/>
+                • Global Rank: {codeChefData?.globalRank || '40338'}<br/>
+                • Country Rank: {codeChefData?.countryRank || 'N/A'}
               </span>
             </a>
           </div>
           
-          <div className="p-4 rounded-xl bg-gray-800/50 hover:bg-gray-800/70 transition-all duration-300 transform hover:-translate-y-1">
+          <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-violet-500/10 hover:border-violet-500/30">
             <a href="https://leetcode.com/u/__mahesh18/" target="_blank" rel="noopener noreferrer"
-               className="block hover:text-blue-400 transition-colors">
+               className="block hover:text-[#7913ff] transition-colors">
               <span className="text-lg font-semibold">LeetCode (@__mahesh18)</span><br/>
               <span className="text-gray-400">
-                • Contest Rating: ~1500<br/>
-                • Problems Solved: ~200<br/>
-                • Global Ranking: Top 15%
+                • Problems Solved: {leetcodeData?.totalSolved || '200+'}<br/>
+                • Global Ranking: {leetcodeData?.ranking ? `Top ${leetcodeData.ranking}` : 'Top 15%'}
               </span>
             </a>
           </div>
@@ -245,6 +238,7 @@ export const WORK_CONTENT = [
               • Member of Computer Society of India (CSI)<br/>
               • Mentored Junior Students in Programming<br/>
               • Participated in Hackathons<br/>
+              • 5 Badges in Hacktober Fest 2024
             </p>
           </div>
         </div>
@@ -262,6 +256,18 @@ export const WORK_CONTENT = [
           Second Year Student<br/>
           CGPA: 9.23/10<br/>
           Hyderabad, India
+        </p>
+        <h3 className="text-xl font-semibold mb-2">Ascent Junior College (2021-2023)</h3>
+        <p className="text-sm text-center">
+          Intermediate Education, APBIE<br/>
+          Scored 941/1000<br/>
+          Vizag, Andhra Pradesh, India
+        </p>
+        <h3 className="text-xl font-semibold mb-2">Nava Bharat Public School (2021)</h3>
+        <p className="text-sm text-center">
+          Secondary Education<br/>
+          CGPA: 8.5/10<br/>
+          Kothagudem, Telangana, India
         </p>
       </div>
     ),
