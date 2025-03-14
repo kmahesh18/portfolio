@@ -38,14 +38,14 @@ const ProjectCard = ({ project }) => (
             <div className="ml-6 space-y-2">
               <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                 <span className="text-[#4AE3B5]">name:</span>
-                <span className="text-yellow-300"> '{project.name}',</span>
+                <span className="text-yellow-300"> &apos;{project.name}&apos;,</span>
               </motion.div>
               <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                 <span className="text-[#4AE3B5]">tools:</span>
                 <span className="text-white"> [</span>
                 {project.tech.map((tool, i) => (
                   <span key={tool} className="text-yellow-300 hover:text-yellow-200 transition-colors">
-                    '{tool}'
+                    &apos;{tool}&apos;
                     {i < project.tech.length - 1 ? <span className="text-white">, </span> : ''}
                   </span>
                 ))}
@@ -53,12 +53,12 @@ const ProjectCard = ({ project }) => (
               </motion.div>
               <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                 <span className="text-[#4AE3B5]">myRole:</span>
-                <span className="text-orange-400"> 'Full Stack Developer',</span>
+                <span className="text-orange-400">  &apos; Full Stack Developer &apos;,</span>
               </motion.div>
               <motion.div whileHover={{ x: 5 }} transition={{ duration: 0.2 }}>
                 <span className="text-[#4AE3B5]">description: </span>
                 <div className="text-cyan-400 ml-4 group-hover:text-cyan-300 transition-colors">
-                  '{project.description}'
+                &apos;{project.description}&apos;
                 </div>
               </motion.div>
             </div>
