@@ -80,11 +80,16 @@ const Hero = () => {
             @media (max-width: 768px) {
               .lottie-container {
                 transform: scale(0.8) translateY(-2rem);
+                opacity: 0.7;
               }
+            }
+            .lottie-container {
+              pointer-events: none;
+              mix-blend-mode: lighten;
             }
           `}
         </style>
-        <div className="flex flex-col pt-40 md:pt-0 select-none w-full md:w-3/5">
+        <div className="flex flex-col pt-40 md:pt-0 select-none w-full md:w-3/5 relative z-10">
           <h5
             className={`${styles.intro} font-mono font-medium text-indigo-light staggered-reveal`}
           >
@@ -135,7 +140,9 @@ const Hero = () => {
             maxWidth: '600px',
             minHeight: '300px',
             transform: 'translateY(0)',
-            visibility: 'visible'
+            visibility: 'visible',
+            zIndex: '-1',
+            opacity: '0.9',
           }}
           ref={lottieRef}
         />

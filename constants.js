@@ -3,7 +3,7 @@ export const METADATA = {
   title: "Portfolio | Mahesh Kumar",
   description:
     "Mahesh Kumar is a passionate Software Engineer, skilled in Problem Solving, building performant web applications.",
-  siteUrl: "https://github.com/kmahesh18",
+  siteUrl: "https://mahesh-zeta.vercel.app",
   twitterHandle: "@xnor404",
   keywords: [
     "Mahesh Kumar",
@@ -14,7 +14,7 @@ export const METADATA = {
     "Portfolio",
     "Devfolio",
   ].join(", "),
-  image: "https://res.cloudinary.com/dywdhyojt/image/upload/v1721378510/social-preview.png",
+  image: "@public/preview.png",
   language: "English",
   themeColor: "#000000",
 };
@@ -99,7 +99,7 @@ export const SKILLS = {
 export const PROJECTS = [
   {
     name: "VENZO - Blog Website",
-    image: "/projects/medium.webp",
+    image: "/projects/medium.png",
     blurImage: "/projects/blur/blog-blur.webp",
     description: "Dynamic blog platform with role-based access control using MERN Stack + Redux",
     gradient: ["#1488CC", "#2B32B2"],
@@ -109,7 +109,7 @@ export const PROJECTS = [
   },
   {
     name: "ZENKAI - Anime Stream",
-    image: "/projects/airbnb.webp",
+    image: "/projects/airbnb.png",
     blurImage: "/projects/blur/anime-blur.webp",
     description: "Optimized streaming platform with server-side rendering",
     gradient: ["#ff0099", "#493240"],
@@ -119,7 +119,7 @@ export const PROJECTS = [
   },
   {
     name: "Lost and Found",
-    image: "/projects/airbnb.webp",
+    image: "/projects/laf.png",
     blurImage: "/projects/blur/anime-blur.webp",
     description: "MERN website to search and find lost objects..",
     gradient: ["#ff0099", "#493240"],
@@ -129,7 +129,7 @@ export const PROJECTS = [
   },
   {
     name: "Metaverse",
-    image: "/projects/medium.webp",
+    image: "/projects/metaverse.png",
     blurImage: "/projects/blur/blog-blur.webp",
     description: "A 3D virtual workspace where employees are represented by customizable avatars, enhancing the remote work experience.",
     gradient: ["#1488CC", "#2B32B2"],
@@ -139,7 +139,7 @@ export const PROJECTS = [
   },
   {
     name: "Excelify",
-    image: "/projects/tesla.webp",
+    image: "/projects/excel.png",
     blurImage: "/projects/blur/excel-blur.webp",
     description: "Interactive dashboards with excel converting features",
     gradient: ["#00b09b", "#96c93d"],
@@ -149,7 +149,7 @@ export const PROJECTS = [
   },
   {
     name: "YTWrap",
-    image: "/projects/inshorts.webp",
+    image: "/projects/inshorts.png",
     blurImage: "/projects/blur/yt-blur.webp",
     description: "Creator-editor platform with automated video processing using AWS",
     gradient: ["#f953c6", "#b91d73"],
@@ -159,7 +159,7 @@ export const PROJECTS = [
   },
   {
     name: "React Chat App",
-    image: "/projects/tesla.webp",
+    image: "/projects/tesla.png",
     blurImage: "/projects/blur/chat-blur.webp",
     description: "Real-time chat platform with Socket.IO and MERN Stack",
     gradient: ["#4568dc", "#b06ab3"],
