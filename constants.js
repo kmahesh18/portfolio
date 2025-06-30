@@ -131,7 +131,7 @@ export const PROJECTS = [
     name: "Metaverse",
     image: "/projects/metaverse.png",
     blurImage: "/projects/blur/blog-blur.webp",
-    description: "A 3D virtual workspace where employees are represented by customizable avatars, enhancing the remote work experience.",
+    description: "A 2D virtual workspace where employees are represented by customizable avatars, enhancing the remote work experience.",
     gradient: ["#1488CC", "#2B32B2"],
     url: "#",
     github: "https://github.com/PAVAN507-STAR/MetaVerse",
