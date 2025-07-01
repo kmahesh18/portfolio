@@ -2,7 +2,7 @@ export const METADATA = {
   author: "Mahesh Kumar",
   title: "Portfolio | Mahesh Kumar",
   description:
-    "Mahesh Kumar is a passionate Software Engineer, skilled in Problem Solving, building performant web applications.",
+    "Mahesh Kumar is a passionate Software Engineer, skilled in Problem Solving, building performant web and mobile applications.",
   siteUrl: "https://mahesh-zeta.vercel.app",
   twitterHandle: "@xnor404",
   keywords: [
@@ -10,6 +10,8 @@ export const METADATA = {
     "Software Engineer",
     "Frontend Developer",
     "Full Stack Developer",
+    "Backend Developer",
+    "Mobile App Developer",
     "React Developer",
     "Portfolio",
     "Devfolio",
@@ -44,7 +46,7 @@ export const MENULINKS = [
 
 export const TYPED_STRINGS = [
   "A passionate Software Engineer",
-  "I build modern full-stack soluions",
+  "I build modern full-stack solutions",
   "I love solving real-world problems",
   "I explore and inspire"
 ];
