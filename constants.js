@@ -108,6 +108,16 @@ export const PROJECTS = [
     tech: ["react", "redux", "nodejs", "mongodb"],
   },
   {
+    name: "Metaverse",
+    image: "/projects/metaversee.png",
+    blurImage: "/projects/blur/blog-blur.webp",
+    description: "A 2D virtual workspace where employees are represented by customizable avatars, enhancing the remote work experience.",
+    gradient: ["#1488CC", "#2B32B2"],
+    url: "https://metaverse-three-indol.vercel.app/",
+    github: "https://github.com/kmahesh18/MetaVerse",
+    tech: ["react", "WebRTC", "nodejs", "three.js"],
+  },
+  {
     name: "ZENKAI - Anime Stream",
     image: "/projects/airbnb.png",
     blurImage: "/projects/blur/anime-blur.webp",
@@ -118,6 +128,16 @@ export const PROJECTS = [
     tech: ["typescript", "nextjs", "redux"],
   },
   {
+    name:"DeliveryFlow",
+    image: "/projects/deliveryFlow.png",
+    blurImage: "/projects/blur/delivery-blur.webp",
+    description: "A comprehensive delivery management system for efficient logistics operations for customers ,admin and delivery.",
+    gradient: ["#00c6ff", "#0072ff"],
+    url: "https://delivery-flow.vercel.app/",
+    github: "https://github.com/kmahesh18/deliveryFlow",
+    tech: ["react", "nodejs", "mongodb", "websockets","leaflet maps"],
+  },
+  {
     name: "Lost and Found",
     image: "/projects/laf.png",
     blurImage: "/projects/blur/anime-blur.webp",
@@ -126,26 +146,6 @@ export const PROJECTS = [
     url: "https://lost-and-found-blue.vercel.app/",
     github: "https://github.com/arbazahmed07/LostandFound",
     tech: ["react", "nextjs", "MERN"],
-  },
-  {
-    name: "Metaverse",
-    image: "/projects/metaverse.png",
-    blurImage: "/projects/blur/blog-blur.webp",
-    description: "A 2D virtual workspace where employees are represented by customizable avatars, enhancing the remote work experience.",
-    gradient: ["#1488CC", "#2B32B2"],
-    url: "#",
-    github: "https://github.com/PAVAN507-STAR/MetaVerse",
-    tech: ["react", "WebRTC", "nodejs", "three.js"],
-  },
-  {
-    name: "Excelify",
-    image: "/projects/excel.png",
-    blurImage: "/projects/blur/excel-blur.webp",
-    description: "Interactive dashboards with excel converting features",
-    gradient: ["#00b09b", "#96c93d"],
-    github: "https://github.com/askarthikey/xcelifiee-repo",
-    url: "#",
-    tech: ["react", "nodejs", "express"],
   },
   {
     name: "YTWrap",
@@ -193,6 +193,49 @@ export const WORK_CONTENT = [
             alt="GitHub Contributions"
             className="w-full rounded-xl shadow-lg hover:shadow-[#7913ff]/20"
           />
+        </div>
+      </div>
+    ),
+  },
+  {
+    title: "Inmin - AI Developer",
+    description: "Building intelligent systems for quick commerce platform",
+    content: (
+      <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500 group">
+        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+          <a href="https://inmin-home.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-300 transition-colors">
+            INMIN - Quick Commerce Platform
+          </a>
+        </h3>
+        <div className="space-y-4 w-full max-w-2xl">
+          <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-blue-500/10 hover:border-blue-500/30">
+            <span className="text-lg font-semibold text-blue-300">AI Developer & Software Engineer</span>
+            <p className="text-gray-300 mt-2 leading-relaxed">
+              • Developing and maintaining 40+ AI agents for automated commerce operations<br/>
+              • Building intelligent systems using Python, TensorFlow, and custom LLMs<br/>
+              • Implementing NLP solutions for customer service automation<br/>
+              • Creating machine learning models for demand forecasting and inventory optimization
+            </p>
+          </div>
+          
+          <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-blue-500/10 hover:border-blue-500/30">
+            <span className="text-lg font-semibold text-cyan-300">Key Technologies</span>
+            <p className="text-gray-300 mt-2">
+              • <strong>AI/ML:</strong> Python, TensorFlow, Custom LLMs, NLP<br/>
+              • <strong>Data Science:</strong> Machine Learning, Predictive Analytics<br/>
+              • <strong>Backend:</strong> Scalable AI Agent Architecture<br/>
+              • <strong>Impact:</strong> Enhanced platform efficiency through intelligent automation
+            </p>
+          </div>
+          
+          <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-blue-500/10 hover:border-blue-500/30">
+            <span className="text-lg font-semibold text-purple-300">Innovation Focus</span>
+            <p className="text-gray-300 mt-2">
+              Crafting intelligent systems that solve real-world problems in quick commerce,<br/>
+              driven by curiosity and precision to deliver data-driven solutions that optimize<br/>
+              customer experience and operational efficiency.
+            </p>
+          </div>
         </div>
       </div>
     ),

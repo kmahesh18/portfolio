@@ -238,7 +238,7 @@ const Projects = () => {
             initial={{ opacity: 0, y: -60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className="mb-16 z-40"
+            className=" z-40"
           >
             <h2 
               className="text-6xl lg:text-8xl font-bold text-center tracking-tight"
@@ -255,7 +255,7 @@ const Projects = () => {
 
           {/* Projects Stack */}
           <div className="relative w-full max-w-7xl mx-auto flex-1 flex items-center">
-            <div className="relative w-full" style={{ height: '70vh' }}>
+            <div className="relative w-full" style={{ height: '80vh' }}>
               <AnimatePresence mode="wait">
                 {PROJECTS.map((project, index) => (
                   <ProjectCard
