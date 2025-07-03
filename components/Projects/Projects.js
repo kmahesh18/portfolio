@@ -100,9 +100,8 @@ const ProjectCard = ({ project, isActive, index, totalProjects }) => {
             </div>
             <div className="text-white mt-3">{`};`}</div>
 
-            {/* Project Links */}
             <div
-              className="flex gap-4 mt-10 opacity-0 translate-y-5 transition-all duration-500"
+              className="flex gap-3 mt-6 opacity-0 translate-y-5 transition-all duration-500"
               style={{
                 opacity: isActive ? 1 : 0,
                 transform: isActive ? 'translateY(0)' : 'translateY(20px)'
@@ -113,15 +112,15 @@ const ProjectCard = ({ project, isActive, index, totalProjects }) => {
                   href={project.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-6 py-3 rounded-xl bg-purple-500/15 hover:bg-purple-500/25
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500/15 hover:bg-purple-500/25
                     text-purple-300 backdrop-blur-sm transition-all duration-200
                     hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] border border-purple-500/20 hover:border-purple-500/40
-                    hover:scale-105 hover:-translate-y-1 active:scale-95"
+                    hover:scale-110 hover:-translate-y-1 active:scale-95"
+                  title="View Code"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                     <path fillRule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0012 2z" clipRule="evenodd" />
                   </svg>
-                  <span className="font-medium">Code</span>
                 </a>
               )}
               {project.url && (
@@ -129,22 +128,22 @@ const ProjectCard = ({ project, isActive, index, totalProjects }) => {
                   href={project.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-6 py-3 rounded-xl bg-purple-500/15 hover:bg-purple-500/25
+                  className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500/15 hover:bg-purple-500/25
                     text-purple-300 backdrop-blur-sm transition-all duration-200
                     hover:shadow-[0_0_20px_rgba(139,92,246,0.4)] border border-purple-500/20 hover:border-purple-500/40
-                    hover:scale-105 hover:-translate-y-1 active:scale-95"
+                    hover:scale-110 hover:-translate-y-1 active:scale-95"
+                  title="Live Demo"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
-                  <span className="font-medium">Live Demo</span>
                 </a>
               )}
             </div>
-          </motion.div>
-        </div>
+            </motion.div>
+            </div>
 
-        {/* Project Image */}
+            {/* Project Image */}
         <div className="relative h-[350px] lg:h-[500px] overflow-hidden rounded-r-2xl">
           <motion.div
             className="absolute inset-0 bg-cover bg-center"
@@ -250,7 +249,7 @@ const Projects = () => {
             initial={{ opacity: 0, y: -60 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, ease: "easeOut" }}
-            className=" z-40"
+            className="lg:mt-16 mb-14 xs:mb-0 sm:mb-0 lg:mb-16 z-40"
           >
             <h2
               className="text-6xl lg:text-8xl font-bold text-center tracking-tight"
