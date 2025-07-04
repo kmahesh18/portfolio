@@ -75,27 +75,56 @@ export const SOCIAL_LINKS = [
 ];
 
 export const SKILLS = {
-  languagesAndTools: [
-    "html",
-    "css",
+  languages: [
     "javascript",
-    "typescript",
+    "typescript", 
     "python",
     "cpp",
-    "nodejs",
-    "express",
-    "aws",
-    "git",
-    "c"
+    "c",
+    "html",
+    "css"
   ],
   librariesAndFrameworks: [
     "react",
+    "reactnative",
     "nextjs",
     "tailwindcss",
     "bootstrap",
+    "redux",
+    "sass",
+    "styledcomponents",
+    "chakra-ui",
+    "antdesign"
   ],
-  databases: ["mysql", "mongodb", "postgresql"],
-  other: ["linux", "aws", "vercel"],
+  databases: [
+    "mongodb",
+    "mysql", 
+    "postgresql",
+    "prisma"
+  ],
+  Tools: [
+    "nodejs",
+    "express",
+    "graphql",
+    "socketio",
+    "webrtc",
+    "aws",
+    "cloudinary",
+    "docker",
+    "git",
+    "github",
+    "linux",
+    "postman",
+    "jest",
+    "vercel",
+    "vite",
+    "webpack",
+    "firebase",
+    "figma",
+    "sanity-io",
+    "rendor",
+    "tanstack-query"
+  ],
 };
 
 export const PROJECTS = [

@@ -1,0 +1,11 @@
+<!-- filepath: /home/mahesh/Documents/portfolio/public/skills/webrtc.svg -->
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" fill="#FF6B35" rx="10"/>
+  <rect x="15" y="25" width="25" height="18" fill="white" rx="3"/>
+  <rect x="60" y="25" width="25" height="18" fill="white" rx="3"/>
+  <path d="M27.5 43 Q50 55 72.5 43" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+  <path d="M45 55 L50 60 L55 55" fill="white"/>
+  <circle cx="27.5" cy="34" r="2" fill="#FF6B35"/>
+  <circle cx="72.5" cy="34" r="2" fill="#FF6B35"/>
+  <text x="50" y="85" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="10" font-weight="bold">WebRTC</text>
+</svg>

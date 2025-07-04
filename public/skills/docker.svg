@@ -1,0 +1,26 @@
+<!-- filepath: /home/mahesh/Documents/portfolio/public/skills/docker.svg -->
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" fill="#2496ED" rx="10"/>
+  
+  <!-- Container boxes -->
+  <rect x="15" y="40" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  <rect x="28" y="40" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  <rect x="41" y="40" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  <rect x="54" y="40" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  <rect x="67" y="40" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  
+  <rect x="28" y="30" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  <rect x="41" y="30" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  <rect x="54" y="30" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  
+  <rect x="41" y="20" width="12" height="8" fill="white" stroke="#2496ED" stroke-width="1"/>
+  
+  <!-- Whale tail -->
+  <path d="M82 35 Q88 30 90 35 Q88 40 82 35" fill="white"/>
+  
+  <!-- Docker text -->
+  <text x="50" y="65" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="12" font-weight="bold">Docker</text>
+  
+  <!-- Water waves -->
+  <path d="M10 50 Q20 48 30 50 Q40 52 50 50 Q60 48 70 50 Q80 52 90 50" fill="none" stroke="white" stroke-width="2"/>
+</svg>

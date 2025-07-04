@@ -1,0 +1,8 @@
+<!-- filepath: /home/mahesh/Documents/portfolio/public/skills/cloudinary.svg -->
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100" height="100" fill="#3448C5" rx="10"/>
+  <path d="M25 60 Q30 45 40 50 Q45 40 55 45 Q65 35 75 45 Q80 50 75 60 L25 60 Z" fill="white"/>
+  <circle cx="70" cy="30" r="8" fill="white"/>
+  <path d="M35 65 Q40 70 45 65 Q50 60 55 65 Q60 70 65 65" fill="none" stroke="white" stroke-width="2"/>
+  <text x="50" y="90" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="9" font-weight="bold">Cloudinary</text>
+</svg>
