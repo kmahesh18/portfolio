@@ -1,288 +1,524 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useCallback,
-  useMemo,
-} from "react";
-import {
-  useMotionValueEvent,
-  useScroll,
-  motion,
-  AnimatePresence,
-} from "framer-motion";
+import React, { useState, useRef, useEffect, useId } from "react";
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from "framer-motion";
 import { WORK_CONTENT } from "../../../constants";
 
-const StickyScroll = ({
-  githubData,
-  codeforcesData,
-  codeChefData,
-  leetcodeData,
-}) => {
-  const [activeCard, setActiveCard] = useState(0);
-  const [isInteracting, setIsInteracting] = useState(false);
-  const containerRef = useRef(null);
-  const activeCardRef = useRef(0);
-
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const contentItems = useMemo(() => WORK_CONTENT || [], []);
-  const cardLength = contentItems.length;
-
-  // Optimized card navigation with useCallback
-  const changeActiveCard = useCallback((newIndex) => {
-    if (newIndex !== activeCardRef.current) {
-      activeCardRef.current = newIndex;
-      setActiveCard(newIndex);
-    }
-  }, []);
-
-  const nextCard = useCallback(() => {
-    const newIndex = (activeCardRef.current + 1) % cardLength;
-    changeActiveCard(newIndex);
-  }, [cardLength, changeActiveCard]);
-
-  const prevCard = useCallback(() => {
-    const newIndex = (activeCardRef.current - 1 + cardLength) % cardLength;
-    changeActiveCard(newIndex);
-  }, [cardLength, changeActiveCard]);
-
-  // Throttled scroll handler for better performance
-  const handleScrollChange = useCallback(
-    (latest) => {
-      if (!isInteracting) {
-        const currentIndex = Math.min(
-          cardLength - 1,
-          Math.floor(latest * cardLength),
-        );
-        changeActiveCard(currentIndex);
-      }
-    },
-    [isInteracting, cardLength, changeActiveCard],
+// Canvas Reveal Effect Component (simplified)
+const CanvasRevealEffect = ({ colors = [[139, 92, 246], [88, 28, 135]] }) => {
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      {[...Array(20)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-violet-400/60 rounded-full"
+          style={{
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            scale: [0, 1, 0],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: Math.random() * 2 + 1,
+            repeat: Infinity,
+            delay: Math.random() * 2,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
   );
+};
 
-  useMotionValueEvent(scrollYProgress, "change", handleScrollChange);
+// CardSpotlight Component
+const CardSpotlight = ({ children, className, onClick }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const [isHovering, setIsHovering] = useState(false);
 
-  // Optimized keyboard navigation
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        prevCard();
-      } else if (event.key === "ArrowRight") {
-        event.preventDefault();
-        nextCard();
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [prevCard, nextCard]);
+  function handleMouseMove({ currentTarget, clientX, clientY }) {
+    let { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
   return (
-    <div className="relative w-full overflow-hidden bg-black min-h-screen">
-      <motion.div ref={containerRef} className="relative h-[200vh]">
-        <div
-          className="sticky top-0 h-screen flex items-center justify-center"
-          onMouseEnter={() => setIsInteracting(true)}
-          onMouseLeave={() => setIsInteracting(false)}
+    <div
+      className={`group/spotlight relative border border-violet-500/30 bg-gradient-to-br rounded-2xl overflow-hidden cursor-pointer ${className}`}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+      onClick={onClick}
+    >
+      <motion.div
+        className="pointer-events-none absolute z-0 -inset-px rounded-2xl opacity-0 transition duration-300 group-hover/spotlight:opacity-100"
+        style={{
+          backgroundColor: "#581c87",
+          maskImage: useMotionTemplate`
+            radial-gradient(
+              300px circle at ${mouseX}px ${mouseY}px,
+              white,
+              transparent 80%
+            )
+          `,
+        }}
+      >
+        {isHovering && <CanvasRevealEffect />}
+      </motion.div>
+      
+      {/* Glowing border effect */}
+      <motion.div
+        className="absolute inset-0 rounded-2xl border-2 border-violet-500/0 pointer-events-none"
+        animate={{
+          borderColor: isHovering 
+            ? ["rgba(139, 92, 246, 0)", "rgba(139, 92, 246, 0.8)", "rgba(139, 92, 246, 0)"] 
+            : "rgba(139, 92, 246, 0)",
+        }}
+        transition={{
+          duration: 2,
+          repeat: isHovering ? Infinity : 0,
+          ease: "easeInOut",
+        }}
+      />
+      
+      <div className="relative z-10 h-full">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// WobbleCard Component (enhanced with wobble effect)
+const WobbleCard = ({ children, containerClassName, onClick }) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+
+  const handleMouseMove = (event) => {
+    const { clientX, clientY } = event;
+    const rect = event.currentTarget.getBoundingClientRect();
+    const x = (clientX - (rect.left + rect.width / 2)) / 15;
+    const y = (clientY - (rect.top + rect.height / 2)) / 15;
+    setMousePosition({ x, y });
+  };
+
+  return (
+    <motion.div
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => {
+        setIsHovering(false);
+        setMousePosition({ x: 0, y: 0 });
+      }}
+      style={{
+        transform: isHovering
+          ? `translate3d(${mousePosition.x}px, ${mousePosition.y}px, 0) scale3d(1.02, 1.02, 1)`
+          : "translate3d(0px, 0px, 0) scale3d(1, 1, 1)",
+        transition: "transform 0.15s ease-out",
+      }}
+      className="w-full h-full"
+    >
+      {/* Desktop version with CardSpotlight */}
+      <div className="hidden md:block">
+        <CardSpotlight
+          className={containerClassName}
+          onClick={onClick}
         >
-          {/* Left Navigation Button */}
-          <button
-            className="absolute left-8 z-20 w-14 h-14 bg-gradient-to-r from-purple-600/20 to-blue-600/20
-              backdrop-blur-xl rounded-full border border-purple-500/30 flex items-center justify-center
-              text-white hover:from-purple-600/40 hover:to-blue-600/40 transition-all duration-200
-              shadow-[0_8px_32px_rgba(139,92,246,0.3)] hover:scale-110 active:scale-95"
-            onClick={prevCard}
+          <motion.div
+            style={{
+              transform: isHovering
+                ? `translate3d(${-mousePosition.x * 0.5}px, ${-mousePosition.y * 0.5}px, 0)`
+                : "translate3d(0px, 0px, 0)",
+              transition: "transform 0.15s ease-out",
+            }}
+            className="h-full px-4 py-6"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15 18L9 12L15 6"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+            {children}
+          </motion.div>
+        </CardSpotlight>
+      </div>
 
-          {/* Right Navigation Button */}
-          <button
-            className="absolute right-8 z-20 w-14 h-14 bg-gradient-to-r from-purple-600/20 to-blue-600/20
-              backdrop-blur-xl rounded-full border border-purple-500/30 flex items-center justify-center
-              text-white hover:from-purple-600/40 hover:to-blue-600/40 transition-all duration-200
-              shadow-[0_8px_32px_rgba(139,92,246,0.3)] hover:scale-110 active:scale-95"
-            onClick={nextCard}
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 18L15 12L9 6"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </button>
+      {/* Mobile version with animated gradients */}
+      <motion.div
+        className="md:hidden w-full h-full relative overflow-hidden rounded-2xl cursor-pointer"
+        onClick={onClick}
+        animate={{
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        style={{
+          background: "linear-gradient(-45deg, #1a0033, #2d1b69, #0f0a1f, #4c1d95, #1a0033)",
+          backgroundSize: "400% 400%",
+        }}
+      >
+        {/* Animated border */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl"
+          animate={{
+            background: [
+              "linear-gradient(45deg, rgba(139, 92, 246, 0.3), rgba(167, 139, 250, 0.1), rgba(139, 92, 246, 0.3))",
+              "linear-gradient(45deg, rgba(167, 139, 250, 0.3), rgba(139, 92, 246, 0.1), rgba(167, 139, 250, 0.3))",
+              "linear-gradient(45deg, rgba(139, 92, 246, 0.3), rgba(167, 139, 250, 0.1), rgba(139, 92, 246, 0.3))",
+            ],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+          style={{
+            padding: "2px",
+            borderRadius: "1rem",
+          }}
+        >
+          <div className="w-full h-full bg-black rounded-2xl" />
+        </motion.div>
 
-          {/* Content Cards */}
-          <div className="w-full max-w-6xl mx-auto px-4 relative">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCard}
-                initial={{
-                  x: "100%", // Start from left side
-                  opacity: 0,
-                  scale: 0.95,
-                  rotateY: -15,  // Slight Y rotation for 3D effect
-                }}
-                animate={{
-                  x: 0, // Slide to center
-                  opacity: 1,
-                  scale: 1,
-                  rotateY: 0,
-                }}
-                exit={{
-                  x: "-100%", // Exit to right side
-                  opacity: 0,
-                  scale: 0.95,
-                  rotateY: 15,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 250, // Increased stiffness for snappier animation
-                  damping: 20,    // Adjusted damping
-                  mass: 0.2,      // Lighter mass for faster movement
-                  duration: 0.05, // Further reduced duration for faster sliding
-                }}
-                style={{
-                  perspective: "1000px",
-                  transformStyle: "preserve-3d",
-                  boxShadow: "0 25px 50px -12px rgba(139, 92, 246, 0.25)",
-                  transformOrigin: "left center",
-                }}
-                className="relative bg-gradient-to-br from-gray-900/50 via-gray-800/30 to-purple-900/20
-                  backdrop-blur-2xl rounded-3xl border border-purple-500/20 overflow-hidden"
+        {/* Floating particles for mobile */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(8)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-1 h-1 bg-violet-400/40 rounded-full"
+              style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+              }}
+              animate={{
+                scale: [0, 1, 0],
+                opacity: [0, 0.6, 0],
+                y: [0, -20, 0],
+              }}
+              transition={{
+                duration: Math.random() * 3 + 2,
+                repeat: Infinity,
+                delay: Math.random() * 2,
+                ease: "easeInOut",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Content */}
+        <motion.div
+          className="relative z-10 h-full px-4 py-6"
+          animate={{
+            scale: [1, 1.02, 1],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        >
+          {children}
+        </motion.div>
+
+        {/* Glow effect */}
+        <motion.div
+          className="absolute inset-0 rounded-2xl opacity-20"
+          animate={{
+            boxShadow: [
+              "inset 0 0 20px rgba(139, 92, 246, 0.1)",
+              "inset 0 0 40px rgba(139, 92, 246, 0.3)",
+              "inset 0 0 20px rgba(139, 92, 246, 0.1)",
+            ],
+          }}
+          transition={{
+            duration: 2.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      </motion.div>
+    </motion.div>
+  );
+};
+
+// Outside click hook
+const useOutsideClick = (ref, callback) => {
+  useEffect(() => {
+    const listener = (event) => {
+      if (!ref.current || ref.current.contains(event.target)) {
+        return;
+      }
+      callback(event);
+    };
+
+    document.addEventListener("mousedown", listener);
+    document.addEventListener("touchstart", listener);
+
+    return () => {
+      document.removeEventListener("mousedown", listener);
+      document.removeEventListener("touchstart", listener);
+    };
+  }, [ref, callback]);
+};
+
+// Close Icon Component
+const CloseIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="h-4 w-4 text-white"
+  >
+    <path d="M18 6l-12 12" />
+    <path d="M6 6l12 12" />
+  </svg>
+);
+
+const StickyScroll = ({ githubData, codeforcesData, codeChefData, leetcodeData }) => {
+  const [active, setActive] = useState(null);
+  const ref = useRef(null);
+  const id = useId();
+
+  const contentItems = WORK_CONTENT || [];
+
+  useEffect(() => {
+    function onKeyDown(event) {
+      if (event.key === "Escape") {
+        setActive(null);
+      }
+    }
+
+    if (active && typeof active === "object") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [active]);
+
+  useOutsideClick(ref, () => setActive(null));
+
+  const getCardColors = (index) => {
+    const colors = [
+      "from-violet-600/40 via-purple-700/30 to-black",
+      "from-purple-600/40 via-violet-700/30 to-black", 
+      "from-indigo-600/40 via-violet-700/30 to-black",
+      "from-violet-700/40 via-purple-600/30 to-black",
+      "from-purple-700/40 via-violet-600/30 to-black",
+      "from-indigo-700/40 via-purple-600/30 to-black"
+    ];
+    return colors[index % colors.length];
+  };
+
+  return (
+    <div className="relative w-full overflow-hidden bg-black min-h-screen py-8 px-4">
+      {/* Background overlay when modal is open */}
+      <AnimatePresence>
+        {active && typeof active === "object" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/80 h-full w-full z-10"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Expandable Card Modal */}
+      <AnimatePresence>
+        {active && typeof active === "object" ? (
+          <div className="fixed inset-0 grid place-items-center z-[100] p-4">
+            <motion.button
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              transition={{ duration: 0.2 }}
+              className="flex absolute top-4 right-4 items-center justify-center bg-purple-600 hover:bg-purple-700 rounded-full h-10 w-10 z-50"
+              onClick={() => setActive(null)}
+            >
+              <CloseIcon />
+            </motion.button>
+            <motion.div
+              ref={ref}
+              initial={{ 
+                opacity: 0, 
+                scale: 0.8, 
+                y: 50,
+                rotateX: -15 
+              }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1, 
+                y: 0,
+                rotateX: 0 
+              }}
+              exit={{ 
+                opacity: 0, 
+                scale: 0.8, 
+                y: 50,
+                rotateX: -15 
+              }}
+              transition={{ 
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }}
+              className="w-full max-w-4xl h-fit max-h-[70vh] md:max-h-[90%] flex flex-col bg-gradient-to-br from-gray-900/95 via-gray-800/95 to-purple-900/95 backdrop-blur-2xl border border-purple-500/20 rounded-3xl overflow-hidden shadow-2xl"
+              style={{
+                boxShadow: "0 25px 50px -12px rgba(139, 92, 246, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.1)"
+              }}
+            >
+              {/* Modal Header */}
+              <motion.div 
+                className="p-4 md:p-6 border-b border-purple-500/20"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1, duration: 0.5 }}
               >
-                {/* Animated Background Elements */}
-                <div className="absolute inset-0 opacity-20">
-                  <div className="absolute top-0 right-0 w-96 h-96 bg-gradient-to-bl from-purple-500/10 to-transparent rounded-full blur-3xl"></div>
-                  <div className="absolute bottom-0 left-0 w-96 h-96 bg-gradient-to-tr from-blue-500/10 to-transparent rounded-full blur-3xl"></div>
-                </div>
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2">
+                  {active.title}
+                </h3>
+                <p className="text-gray-300 text-sm md:text-lg">
+                  {active.description}
+                </p>
+              </motion.div>
 
-                {/* Enhanced Content Header */}
-                <div className="relative p-8 md:p-10 border-b border-purple-500/20 bg-gradient-to-r from-transparent to-purple-500/5">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div
-                      className="w-12 h-12 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl
-                      flex items-center justify-center shadow-lg"
-                    >
-                      <span className="text-white font-bold text-xl">
-                        {activeCard + 1}
-                      </span>
-                    </div>
-                    <div className="flex-1">
-                      <h2
-                        className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-white via-purple-200 to-blue-200
-                        bg-clip-text text-transparent leading-tight"
-                      >
-                        {contentItems[activeCard]?.title}
-                      </h2>
-                    </div>
-                  </div>
-
-                  <p className="text-gray-300 text-lg leading-relaxed font-medium">
-                    {contentItems[activeCard]?.description}
-                  </p>
-                </div>
-
-                {/* Enhanced Main Content */}
-                <div className="relative p-8 md:p-10 max-h-[55vh] overflow-y-auto enhanced-scrollbar">
-                  {/* Content Background Pattern */}
-                  <div className="absolute inset-0 opacity-5">
-                    <div
-                      className="w-full h-full"
-                      style={{
-                        backgroundImage: `radial-gradient(circle at 25% 25%, rgba(139,92,246,0.3) 0%, transparent 50%),
-                                       radial-gradient(circle at 75% 75%, rgba(59,130,246,0.3) 0%, transparent 50%)`,
-                      }}
-                    ></div>
-                  </div>
-
-                  <div className="relative enhanced-content">
-                    {typeof contentItems[activeCard]?.content === "function"
-                      ? contentItems[activeCard].content({
-                          githubData,
-                          codeforcesData,
-                          codeChefData,
-                          leetcodeData,
-                        })
-                      : contentItems[activeCard]?.content}
-                  </div>
-                </div>
-
-                {/* Enhanced Footer */}
-                <div className="relative p-6 border-t border-purple-500/20 bg-gradient-to-r from-gray-900/30 to-purple-900/20">
-                  <div className="flex items-center justify-between">
-                    {/* Simplified Navigation Dots */}
-                    <div className="flex items-center gap-3">
-                      {contentItems.map((_, index) => (
-                        <button
-                          key={index}
-                          className={`rounded-full transition-all duration-300 hover:scale-110 ${
-                            activeCard === index
-                              ? "w-10 h-3 bg-gradient-to-r from-purple-500 to-blue-500"
-                              : "w-3 h-3 bg-gray-600 hover:bg-gray-500"
-                          }`}
-                          onClick={() => changeActiveCard(index)}
-                        />
-                      ))}
-                    </div>
-
-                    {/* Card Counter */}
-                    <div className="flex items-center gap-4">
-                      <span className="text-gray-400 text-sm font-medium">
-                        {activeCard + 1} of {cardLength}
-                      </span>
-                      <div className="w-24 h-1 bg-gray-700 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-purple-500 to-blue-500 rounded-full transition-all duration-300 ease-out"
-                          style={{
-                            width: `${((activeCard + 1) / cardLength) * 100}%`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
+              {/* Modal Content */}
+              <motion.div 
+                className="flex-1 p-4 md:p-6 overflow-y-auto enhanced-scrollbar"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.5 }}
+              >
+                <div className="enhanced-content text-white">
+                  {typeof active.content === "function"
+                    ? active.content({
+                        githubData,
+                        codeforcesData,
+                        codeChefData,
+                        leetcodeData,
+                      })
+                    : active.content}
                 </div>
               </motion.div>
-            </AnimatePresence>
-
-            {/* Subtle side indicators for left-right navigation */}
-            <div className="absolute inset-y-0 -left-10 w-10 bg-gradient-to-r from-purple-500/5 to-transparent" />
-            <div className="absolute inset-y-0 -right-10 w-10 bg-gradient-to-l from-purple-500/5 to-transparent" />
+            </motion.div>
           </div>
-        </div>
-      </motion.div>
+        ) : null}
+      </AnimatePresence>
 
-      {/* Enhanced Styles for Better Content UI */}
+      {/* Main Content - Header */}
+      <div className="w-full max-w-4xl mx-auto mb-8 text-center">
+        <h2 className="text-7xl font-bold text-center mb-4 gradient-text"
+          style={{
+            background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundSize: "200% auto",
+            animation: "shine 5s linear infinite",
+          }}>
+          My Professional Journey
+        </h2>
+        <p className="text-gray-400 text-base md:text-lg max-w-2xl mx-auto leading-relaxed">
+          Explore my technical expertise, projects, and achievements through interactive cards.
+        </p>
+      </div>
+
+      {/* WobbleCard Grid */}
+      <div className="w-full max-w-4xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3 lg:gap-4">
+          {contentItems.map((item, index) => {
+            const isLarge = index === 0 || index === 3;
+            return (
+              <motion.div
+                key={`card-${item.title}-${id}`}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  ease: "easeOut" 
+                }}
+                className={`${
+                  isLarge ? "col-span-2 lg:col-span-2" : "col-span-1"
+                }`}
+              >
+                <WobbleCard
+                  containerClassName={`w-full h-full min-h-[180px] md:min-h-[220px] lg:min-h-[260px] hover:shadow-violet-500/50 hover:border-violet-400/70 transition-all duration-300 group ${getCardColors(index)}`}
+                  onClick={() => setActive(item)}
+                >
+                  <div className="w-full h-full flex flex-col justify-between relative">
+                    <div className="flex-1 flex flex-col justify-center">
+                      <motion.h2 
+                        className="text-left text-balance text-sm md:text-base lg:text-lg xl:text-xl font-semibold tracking-[-0.015em] text-white mb-3 leading-tight group-hover:text-violet-200 transition-colors duration-300"
+                        animate={{
+                          color: ["#ffffff", "#c4b5fd", "#ffffff"],
+                        }}
+                        transition={{
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut",
+                          repeatType: "reverse",
+                        }}
+                      >
+                        {item.title}
+                      </motion.h2>
+                      <motion.p 
+                        className="text-left text-xs md:text-sm lg:text-base text-gray-300 group-hover:text-gray-200 line-clamp-3 leading-relaxed transition-colors duration-300"
+                      >
+                        {item.description}
+                      </motion.p>
+                    </div>
+                    
+                    {/* Mobile tap indicator */}
+                    <motion.div 
+                      className="absolute bottom-2 right-2 md:opacity-0 md:group-hover:opacity-100 opacity-60 transition-all duration-300"
+                      animate={{
+                        x: [0, 3, 0],
+                        scale: [1, 1.1, 1],
+                      }}
+                      transition={{
+                        duration: 1.5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <svg className="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
+                    </motion.div>
+                  </div>
+                </WobbleCard>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Essential Styles for Content */}
       <style jsx global>{`
-        /* Core styles only */
+        * {
+          box-sizing: border-box;
+        }
+
+        html, body {
+          overflow-x: hidden !important;
+          max-width: 100vw !important;
+        }
+
+        @keyframes shine {
+          0% { background-position: 200% center; }
+          100% { background-position: -200% center; }
+        }
+
         .enhanced-scrollbar::-webkit-scrollbar {
           width: 8px;
         }
@@ -291,11 +527,7 @@ const StickyScroll = ({
           border-radius: 8px;
         }
         .enhanced-scrollbar::-webkit-scrollbar-thumb {
-          background: linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.6),
-            rgba(59, 130, 246, 0.6)
-          );
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(59, 130, 246, 0.6));
           border-radius: 8px;
           border: 2px solid transparent;
           background-clip: content-box;
@@ -304,65 +536,36 @@ const StickyScroll = ({
         .enhanced-content {
           color: #fff;
           font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-          filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.15));
-          transition: filter 0.3s ease;
-        }
-        
-        .enhanced-content:hover {
-          filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.25));
         }
 
-        /* Content element animations */
         .enhanced-content > * {
           animation: enhancedFadeIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
           opacity: 0;
-          transform: translateY(20px) translateZ(0);
+          transform: translateY(20px);
         }
 
         @keyframes enhancedFadeIn {
-          0% { opacity: 0; transform: translateY(25px) translateZ(0); }
-          100% { opacity: 1; transform: translateY(0) translateZ(0); }
+          0% { opacity: 0; transform: translateY(25px); }
+          100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Staggered content timing */
         .enhanced-content > *:nth-child(1) { animation-delay: 0.1s; }
         .enhanced-content > *:nth-child(2) { animation-delay: 0.17s; }
         .enhanced-content > *:nth-child(3) { animation-delay: 0.24s; }
         .enhanced-content > *:nth-child(4) { animation-delay: 0.31s; }
         .enhanced-content > *:nth-child(5) { animation-delay: 0.38s; }
         .enhanced-content > *:nth-child(6) { animation-delay: 0.45s; }
-        
-        /* Essential content styling */
-        .enhanced-content a {
-          color: #a78bfa;
-          font-weight: 600;
-          position: relative;
-          transition: all 0.3s ease;
-        }
-        
-        .enhanced-content a:hover {
-          color: #c4b5fd;
-        }
 
-        /* Enhanced Links */
         .enhanced-content a {
           color: #a78bfa;
           font-weight: 600;
           text-decoration: none;
-          background: linear-gradient(135deg, #a78bfa, #60a5fa);
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          transition: all 0.3s ease;
           position: relative;
           padding: 2px 4px;
           border-radius: 4px;
         }
-        .enhanced-content a:hover {
-          transform: translateY(-1px);
-          background: rgba(167, 139, 250, 0.1);
-          -webkit-text-fill-color: #c4b5fd;
-        }
+        
         .enhanced-content a::after {
           content: "";
           position: absolute;
@@ -372,89 +575,77 @@ const StickyScroll = ({
           height: 2px;
           background: linear-gradient(135deg, #a78bfa, #60a5fa);
           transition: width 0.3s ease;
+          border-radius: 1px;
         }
+        
+        .enhanced-content a:hover {
+          color: #c4b5fd;
+          transform: translateY(-1px);
+        }
+        
         .enhanced-content a:hover::after {
           width: 100%;
         }
-
-        /* Enhanced Headings */
+        
         .enhanced-content h1,
         .enhanced-content h2,
         .enhanced-content h3,
         .enhanced-content h4 {
-          background: linear-gradient(135deg, #ffffff, #e2e8f0);
-          background-clip: text;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: #ffffff;
           font-weight: 700;
           margin: 2rem 0 1rem 0;
-          position: relative;
           line-height: 1.2;
         }
-        .enhanced-content h3 {
-          font-size: 1.5rem;
-        }
-        .enhanced-content h3::before {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -8px;
-          width: 60px;
-          height: 3px;
-          background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-          border-radius: 2px;
-        }
 
-        /* Enhanced Paragraphs */
         .enhanced-content p {
           color: #e2e8f0;
           line-height: 1.8;
           margin-bottom: 1.5rem;
           font-size: 1.05rem;
-          font-weight: 400;
         }
 
-        /* Enhanced Lists */
         .enhanced-content ul {
           list-style-type: none;
-          padding: 0;
+          padding: 1.5rem;
           margin: 1.5rem 0;
           background: rgba(139, 92, 246, 0.02);
           border-radius: 12px;
-          padding: 1.5rem;
           border: 1px solid rgba(139, 92, 246, 0.1);
         }
+        
         .enhanced-content li {
           margin-bottom: 1rem;
           color: #e2e8f0;
           position: relative;
-          padding-left: 2rem;
+          padding: 0.75rem 0 0.75rem 2rem;
           font-size: 1.05rem;
           line-height: 1.6;
-          transition: all 0.3s ease;
-          padding: 0.75rem 0 0.75rem 2rem;
           border-radius: 8px;
+          transition: all 0.3s ease;
         }
+        
         .enhanced-content li:hover {
           color: #f1f5f9;
-          transform: translateX(2px);
           background: rgba(139, 92, 246, 0.05);
         }
+        
         .enhanced-content li::before {
           content: "◆";
           position: absolute;
           left: 0.5rem;
           color: #8b5cf6;
           font-weight: bold;
-          font-size: 1em;
-          transition: color 0.2s ease;
           top: 0.75rem;
         }
-        .enhanced-content li:hover::before {
-          color: #a78bfa;
+
+        .enhanced-content img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 16px;
+          margin: 1.5rem 0;
+          border: 1px solid rgba(139, 92, 246, 0.2);
         }
 
-        /* Enhanced Tables */
         .enhanced-content table {
           width: 100%;
           border-collapse: collapse;
@@ -463,314 +654,35 @@ const StickyScroll = ({
           border-radius: 16px;
           overflow: hidden;
           border: 1px solid rgba(139, 92, 246, 0.2);
-          box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
         }
+        
         .enhanced-content th,
         .enhanced-content td {
           padding: 1.25rem 1rem;
           text-align: left;
           border-bottom: 1px solid rgba(139, 92, 246, 0.1);
-          transition: all 0.3s ease;
         }
+        
         .enhanced-content th {
-          background: linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.15),
-            rgba(59, 130, 246, 0.15)
-          );
+          background: rgba(139, 92, 246, 0.15);
           font-weight: bold;
           color: #fff;
-          font-size: 1.1rem;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
+        
         .enhanced-content td {
           color: #e2e8f0;
-          font-weight: 500;
-        }
-        .enhanced-content tr:hover td {
-          background: rgba(139, 92, 246, 0.08);
-          color: #f1f5f9;
         }
 
-        /* Enhanced Code Blocks */
-        .enhanced-content pre,
         .enhanced-content code {
           background: rgba(0, 0, 0, 0.4);
           border: 1px solid rgba(139, 92, 246, 0.2);
           border-radius: 8px;
-          font-family: "Fira Code", "Monaco", "Consolas", monospace;
-          color: #e2e8f0;
-        }
-        .enhanced-content pre {
-          padding: 1.5rem;
-          margin: 1.5rem 0;
-          overflow-x: auto;
-          position: relative;
-        }
-        .enhanced-content pre::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 3px;
-          background: linear-gradient(135deg, #8b5cf6, #3b82f6);
-        }
-        .enhanced-content code {
           padding: 0.25rem 0.5rem;
+          font-family: "Monaco", "Consolas", monospace;
+          color: #e2e8f0;
           font-size: 0.9em;
-        }
-
-        /* Enhanced Media */
-        .enhanced-content canvas,
-        .enhanced-content svg,
-        .enhanced-content img {
-          max-width: 100%;
-          height: auto;
-          border-radius: 16px;
-          border: 1px solid rgba(139, 92, 246, 0.2);
-          background: rgba(0, 0, 0, 0.2);
-          transition: all 0.4s ease;
-          margin: 1.5rem 0;
-          box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1);
-        }
-        .enhanced-content canvas:hover,
-        .enhanced-content svg:hover,
-        .enhanced-content img:hover {
-          border-color: rgba(139, 92, 246, 0.4);
-          box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Enhanced Quotes */
-        .enhanced-content blockquote {
-          border-left: 4px solid #8b5cf6;
-          background: rgba(139, 92, 246, 0.05);
-          padding: 1.5rem;
-          margin: 2rem 0;
-          border-radius: 0 12px 12px 0;
-          font-style: italic;
-          color: #e2e8f0;
-          position: relative;
-        }
-        .enhanced-content blockquote::before {
-          content: '"';
-          font-size: 4rem;
-          color: rgba(139, 92, 246, 0.3);
-          position: absolute;
-          top: -0.5rem;
-          left: 1rem;
-          font-family: serif;
-        }
-
-        /* Enhanced Badges/Tags */
-        .enhanced-content .badge,
-        .enhanced-content .tag {
-          display: inline-block;
-          background: linear-gradient(
-            135deg,
-            rgba(139, 92, 246, 0.2),
-            rgba(59, 130, 246, 0.2)
-          );
-          color: #e2e8f0;
-          padding: 0.5rem 1rem;
-          border-radius: 20px;
-          font-size: 0.9rem;
-          font-weight: 600;
-          margin: 0.25rem;
-          border: 1px solid rgba(139, 92, 246, 0.3);
-          transition: all 0.3s ease;
-        }
-        .enhanced-content .badge:hover,
-        .enhanced-content .tag:hover {
-          box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
-        }
-
-        /* Enhanced Stats/Cards */
-        .enhanced-content .stat-card,
-        .enhanced-content .info-card {
-          background: rgba(139, 92, 246, 0.05);
-          border: 1px solid rgba(139, 92, 246, 0.2);
-          border-radius: 16px;
-          padding: 1.5rem;
-          margin: 1rem 0;
-          transition: all 0.3s ease;
-        }
-        .enhanced-content .stat-card:hover,
-        .enhanced-content .info-card:hover {
-          border-color: rgba(139, 92, 246, 0.4);
-          box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Enhanced Animations */
-        .enhanced-content > * {
-          animation: enhancedFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          opacity: 0;
-          transform: translateY(20px) translateZ(0);
-        }
-
-        @keyframes enhancedFadeIn {
-          0% {
-            opacity: 0;
-            transform: translateY(25px) translateZ(0);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) translateZ(0);
-          }
-        }
-
-        /* Improved staggered animations with more natural timing */
-        .enhanced-content > *:nth-child(1) { animation-delay: 0.1s; }
-        .enhanced-content > *:nth-child(2) { animation-delay: 0.17s; }
-        .enhanced-content > *:nth-child(3) { animation-delay: 0.24s; }
-        .enhanced-content > *:nth-child(4) { animation-delay: 0.31s; }
-        .enhanced-content > *:nth-child(5) { animation-delay: 0.38s; }
-        .enhanced-content > *:nth-child(6) { animation-delay: 0.45s; }
-        .enhanced-content > *:nth-child(7) { animation-delay: 0.52s; }
-        .enhanced-content > *:nth-child(8) { animation-delay: 0.59s; }
-
-        /* Page turning effect enhancement */
-        @keyframes pageTurn {
-          from { transform: rotateY(90deg); opacity: 0.2; }
-          to { transform: rotateY(0); opacity: 1; }
-        }
-
-        /* Add subtle hover animation to make content feel alive */
-        .enhanced-content:hover > *:hover {
-          transform: translateY(-2px) scale(1.01);
-          transition: transform 0.3s ease;
-        }
-        
-        /* Animation for navigation between cards */
-        @media (prefers-reduced-motion: no-preference) {
-          .active-card-transition {
-            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-          }
-        }
-
-        /* Simplified glow effect with improved animation */
-        .enhanced-content {
-          filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.15));
-          transition: filter 0.4s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .enhanced-content:hover {
-          filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.3));
-        }
-
-        /* Parallax Animation Effects */
-        .parallax-card {
-          transform-style: preserve-3d;
-          transform-origin: center center;
-        }
-        
-        .parallax-card::before {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: radial-gradient(circle at center, transparent 60%, rgba(139, 92, 246, 0.1));
-          z-index: -1;
-          opacity: 0;
-          transition: opacity 1s ease;
-        }
-        
-        .parallax-card:hover::before {
-          opacity: 1;
-        }
-
-        /* Enhanced parallax content animations */
-        .enhanced-content > * {
-          animation: parallaxFadeIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          opacity: 0;
-          transform: translateZ(0);
-        }
-        
-        @keyframes parallaxFadeIn {
-          0% {
-            opacity: 0;
-            transform: translateY(30px) translateZ(-50px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0) translateZ(0);
-          }
-        }
-
-        /* Staggered parallax timings with different depths */
-        .enhanced-content > *:nth-child(1) { 
-          animation-delay: 0.1s; 
-          transform: translateZ(10px);
-        }
-        .enhanced-content > *:nth-child(2) { 
-          animation-delay: 0.17s; 
-          transform: translateZ(20px);
-        }
-        .enhanced-content > *:nth-child(3) { 
-          animation-delay: 0.24s; 
-          transform: translateZ(30px);
-        }
-        .enhanced-content > *:nth-child(4) { 
-          animation-delay: 0.31s; 
-          transform: translateZ(25px);
-        }
-        .enhanced-content > *:nth-child(5) { 
-          animation-delay: 0.38s; 
-          transform: translateZ(15px);
-        }
-        .enhanced-content > *:nth-child(6) { 
-          animation-delay: 0.45s; 
-          transform: translateZ(5px);
-        }
-        .enhanced-content > *:nth-child(7) { 
-          animation-delay: 0.52s; 
-          transform: translateZ(15px);
-        }
-        .enhanced-content > *:nth-child(8) { 
-          animation-delay: 0.59s; 
-          transform: translateZ(10px);
-        }
-        
-        /* Improved parallax page turn effect */
-        @keyframes parallaxPageTurn {
-          0% {
-            transform: rotateY(70deg) translateZ(-100px);
-            opacity: 0;
-          }
-          100% {
-            transform: rotateY(0) translateZ(0);
-            opacity: 1;
-          }
-        }
-        
-        /* Parallax mouse movement effect */
-        .parallax-card:hover {
-          transition: transform 0.2s ease-out;
-        }
-        
-        .parallax-card:hover .enhanced-content > * {
-          transition: transform 0.2s ease-out;
-        }
-        
-        /* Parallax shadows for depth enhancement */
-        .parallax-card::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          height: 40%;
-          background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
-          opacity: 0;
-          transition: opacity 0.3s ease;
-          pointer-events: none;
-        }
-        
-        .parallax-card:hover::after {
-          opacity: 0.5;
         }
       `}</style>
     </div>

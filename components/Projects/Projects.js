@@ -244,27 +244,26 @@ const Projects = () => {
           ref={projectsRef}
           className="sticky top-0 h-screen w-full flex flex-col items-center justify-center px-6"
         >
-          {/* Projects Title - Bigger and Centered */}
-          <motion.div
-            initial={{ opacity: 0, y: -60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
-            className="lg:mt-16 mb-14 xs:mb-0 sm:mb-0 lg:mb-16 z-40"
-          >
-            <h2
-              className="text-6xl lg:text-8xl font-bold text-center tracking-tight"
-              style={{
-                marginTop: '3rem',
-                background: "linear-gradient(135deg, #9F7AEA 0%, #667EEA 50%, #4C1D95 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Projects
-            </h2>
-          </motion.div>
 
-          {/* Projects Stack */}
+                <motion.div
+                initial={{ opacity: 0, y: -60 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="mt-8 xs:mt-4 lg:mt-18 pt-8 sm:pt-4 lg:pt-32 mb-10 xs:mb-0 sm:mb-0 lg:mb-24 z-40"
+                >
+                <h2 className="text-7xl font-bold text-center mb-4 gradient-text"
+                style={{
+                  background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundSize: "200% auto",
+                  animation: "shine 5s linear infinite",
+                }}>
+                  Projects
+                </h2>
+                </motion.div>
+
+                {/* Projects Stack */}
           <div className="relative w-full max-w-7xl mx-auto flex-1 flex items-center">
             <div className="relative w-full" style={{ height: '80vh' }}>
               <AnimatePresence mode="wait">

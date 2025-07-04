@@ -214,20 +214,23 @@ const Skills = () => {
         viewport={{ once: true, margin: "-100px" }}
         transition={{ duration: 0.8 }}
       >
-        <motion.h2 
-          className="text-6xl sm:text-7xl lg:text-8xl font-bold relative z-10 mt-24"
-          style={{
-            background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-          initial={{ scale: 0.9 }}
-          whileInView={{ scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, type: "spring", stiffness: 100 }}
-        >
-          Skills
-        </motion.h2>
+        <motion.div
+                initial={{ opacity: 0, y: -60 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.2, ease: "easeOut" }}
+                className="mt-28 z-40"
+                >
+                <h2 className="text-7xl font-bold text-center mb-4 gradient-text"
+                style={{
+                  background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundSize: "200% auto",
+                  animation: "shine 5s linear infinite",
+                }}>
+                  Skills
+                </h2>
+                </motion.div>
         <motion.div
           className="w-24 h-1 bg-gradient-to-r from-purple-500 to-purple-900 mx-auto mt-6 rounded-full"
           initial={{ width: 0 }}
