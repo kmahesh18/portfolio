@@ -196,9 +196,16 @@ export const WORK_CONTENT = [
     description: "Open Source Contributions & Projects",
     content: ({ githubData }) => (
       <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-violet-500/20 hover:border-violet-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-4 bg-gradient-to-r from-[#7913ff] to-violet-300 bg-clip-text text-transparent">
-          GITHUB
-        </h3>
+        <h1 className="text-3xl font-bold text-center mb-4 gradient-text"
+            style={{
+              background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% auto",
+              animation: "shine 5s linear infinite",
+            }}>
+            Github
+          </h1>
         <div className="text-gray-300 space-y-3 text-center">
           <a href="https://github.com/kmahesh18" target="_blank" rel="noopener noreferrer" className="text-lg hover:text-[#7913ff] transition-colors">@kmahesh18</a>
           <p className="block hover:text-[#7913ff] transition-colors">
@@ -223,9 +230,16 @@ export const WORK_CONTENT = [
     description: "Active competitive programmer with strong problem-solving skills",
     content: ({ codeforcesData, codeChefData, leetcodeData }) => (
       <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-violet-500/20 hover:border-violet-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-[#7913ff] to-violet-300 bg-clip-text text-transparent">
-          Coding Profiles
-        </h3>
+        <h1 className="text-3xl font-bold text-center mb-4 gradient-text"
+            style={{
+              background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% auto",
+              animation: "shine 5s linear infinite",
+            }}>
+            Coding Profiles
+          </h1>
         <div className="space-y-6 w-full max-w-md">
           <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-violet-500/10 hover:border-violet-500/30">
             <a href="https://www.codechef.com/users/kmahesh_18" target="_blank" rel="noopener noreferrer"
@@ -271,9 +285,16 @@ export const WORK_CONTENT = [
     description: "Campus Involvement & Community Contributions",
     content: () => (
       <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-green-500/20 hover:border-green-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-green-400 to-emerald-300 bg-clip-text text-transparent">
-          Leadership & Community
-        </h3>
+        <h1 className="text-3xl font-bold text-center mb-4 gradient-text"
+            style={{
+              background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% auto",
+              animation: "shine 5s linear infinite",
+            }}>
+            Leadership & Community
+          </h1>
         <div className="space-y-4 w-full max-w-2xl">
           <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-green-500/10 hover:border-green-500/30">
             <span className="text-lg font-semibold text-green-300">Core Member - Turing Hut (Coding Club)</span>
@@ -318,9 +339,16 @@ export const WORK_CONTENT = [
     description: "Academic Excellence & Professional Development",
     content: () => (
       <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-orange-500/20 hover:border-orange-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-orange-400 to-yellow-300 bg-clip-text text-transparent">
-          Education & Certifications
-        </h3>
+        <h1 className="text-3xl font-bold text-center mb-4 gradient-text"
+            style={{
+              background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% auto",
+              animation: "shine 5s linear infinite",
+            }}>
+            Education & Certifications
+          </h1>
         <div className="space-y-4 w-full max-w-2xl">
           <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-orange-500/10 hover:border-orange-500/30">
             <span className="text-lg font-semibold text-orange-300">B.Tech Computer Science & Engineering</span>
@@ -359,7 +387,7 @@ export const WORK_CONTENT = [
     description: "Building intelligent systems for quick commerce platform",
     content: (
       <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-blue-500/20 hover:border-blue-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
+        <h3 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-cyan-300 bg-clip-text text-transparent">
           <a href="https://inmin-home.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-300 transition-colors">
             INMIN - Quick Commerce Platform
           </a>
@@ -402,9 +430,16 @@ export const WORK_CONTENT = [
     description: "Full-Stack Development & Modern Technologies",
     content: () => (
       <div className="h-full w-full flex flex-col justify-center items-center p-8 bg-[#0A0A1B] backdrop-blur-sm rounded-2xl border border-purple-500/20 hover:border-purple-500/40 transition-all duration-500 group">
-        <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-purple-400 to-pink-300 bg-clip-text text-transparent">
-          Technical Expertise
-        </h3>
+        <h1 className="text-3xl font-bold text-center mb-4 gradient-text"
+            style={{
+              background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundSize: "200% auto",
+              animation: "shine 5s linear infinite",
+            }}>
+            Technical Expertise
+          </h1>
         <div className="space-y-4 w-full max-w-2xl">
           <div className="p-4 rounded-xl bg-black/50 hover:bg-black/70 transition-all duration-300 transform hover:-translate-y-1 border border-purple-500/10 hover:border-purple-500/30">
             <span className="text-lg font-semibold text-purple-300">Languages & Core</span>
