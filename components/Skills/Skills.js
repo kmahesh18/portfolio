@@ -2,20 +2,11 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { MENULINKS, SKILLS } from "../../constants";
-import { motion, useScroll, useTransform, AnimatePresence, useMotionValue, useSpring } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 
 const AnimatedSkillTooltip = ({ items }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const springConfig = { stiffness: 100, damping: 5 };
-  const x = useMotionValue(0);
-  const rotate = useSpring(useTransform(x, [-100, 100], [-15, 15]), springConfig);
-  const translateX = useSpring(useTransform(x, [-100, 100], [-20, 20]), springConfig);
   
-  const handleMouseMove = (event) => {
-    const halfWidth = event.target.offsetWidth / 2;
-    x.set(event.nativeEvent.offsetX - halfWidth);
-  };
-
   return (
     <div className="max-w-4xl mx-auto px-4">
       <div className="p-4">
@@ -27,7 +18,7 @@ const AnimatedSkillTooltip = ({ items }) => {
               onMouseEnter={() => setHoveredIndex(item.id)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <AnimatePresence mode="popLayout">
+              <AnimatePresence>
                 {hoveredIndex === item.id && (
                   <motion.div
                     initial={{ opacity: 0, y: 20, scale: 0.6 }}
@@ -42,11 +33,6 @@ const AnimatedSkillTooltip = ({ items }) => {
                       },
                     }}
                     exit={{ opacity: 0, y: 20, scale: 0.6 }}
-                    style={{
-                      translateX: translateX,
-                      rotate: rotate,
-                      whiteSpace: "nowrap",
-                    }}
                     className="absolute -top-14 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center justify-center rounded-lg bg-gradient-to-br from-purple-900/95 to-black/95 backdrop-blur-sm px-3 py-2 text-xs shadow-2xl"
                   >
                     <div className="absolute inset-x-3 -bottom-px z-30 h-px w-[60%] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
@@ -60,15 +46,9 @@ const AnimatedSkillTooltip = ({ items }) => {
               </AnimatePresence>
               
               <motion.div
-                onMouseMove={handleMouseMove}
                 className="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-violet-900/60 to-violet-800/80 rounded-xl overflow-hidden transition-all duration-300 backdrop-blur-sm cursor-pointer m-1"
                 animate={{
                   y: [0, -8, 0],
-                  boxShadow: [
-                    "0 0 20px rgba(139, 92, 246, 0.3)",
-                    "0 0 30px rgba(139, 92, 246, 0.6)",
-                    "0 0 20px rgba(139, 92, 246, 0.3)"
-                  ]
                 }}
                 transition={{
                   y: {
@@ -76,21 +56,13 @@ const AnimatedSkillTooltip = ({ items }) => {
                     repeat: Infinity,
                     ease: "easeInOut",
                     delay: idx * 0.2
-                  },
-                  boxShadow: {
-                    duration: 1.5 + (idx % 2),
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: idx * 0.3
                   }
                 }}
                 whileHover={{ 
                   scale: 1.15,
                   y: -12,
                   boxShadow: "0 0 40px rgba(139, 92, 246, 0.8)",
-                  transition: { type: "spring", stiffness: 400, damping: 10 }
                 }}
-                whileTap={{ scale: 0.95 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-violet-500/20 animate-pulse" />
                 <Image
@@ -184,13 +156,13 @@ const Skills = () => {
         className="text-center mb-12 relative z-20"
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true }}
         transition={{ duration: 0.8 }}
       >
         <motion.div
           initial={{ opacity: 0, y: -60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
+          transition={{ duration: 1.2 }}
           className="mt-28 z-40"
         >
           <h2 className="text-7xl font-bold text-center mb-4 gradient-text"
@@ -209,7 +181,7 @@ const Skills = () => {
           initial={{ width: 0 }}
           whileInView={{ width: 96 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.2 }}
+          transition={{ duration: 0.8 }}
         />
       </motion.div>
 
@@ -221,12 +193,8 @@ const Skills = () => {
         <SkillsGrid />
       </motion.div>
 
-      {/* Background cosmic effects */}
-      <div className="fixed inset-0 pointer-events-none -z-10">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full filter blur-[150px] animate-pulse" 
-          style={{ animationDuration: '8s' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-violet-500/5 rounded-full filter blur-[150px] animate-pulse"
-          style={{ animationDuration: '10s', animationDelay: '2s' }} />
+      {/* Simplified background effect */}
+      <div className="absolute inset-0 pointer-events-none -z-10">
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-purple-500/3 rounded-full filter blur-[200px]" />
       </div>
 
