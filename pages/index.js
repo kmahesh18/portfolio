@@ -11,6 +11,7 @@ import About1 from "@/components/About/About1";
 import Skills from "@/components/Skills/Skills";
 import About2 from "@/components/About/About2";
 import Projects from "@/components/Projects/Projects";
+import LottieSection from "@/components/LottieSection/LottieSection";
 import Work from "@/components/Work/Work";
 import Collaboration from "@/components/Collaboration/Collaboration";
 import Contact from "@/components/Contact/Contact";
@@ -71,6 +72,7 @@ export default function Home() {
             <Skills />
             <About2 clientHeight={clientHeight} />
             <Projects isDesktop={isDesktop} clientHeight={clientHeight} />
+            <LottieSection />
             <Work isDesktop={isDesktop} />
             <Collaboration clientHeight={clientHeight} />
             <Contact />

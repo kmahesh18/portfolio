@@ -5,8 +5,6 @@ import Button from "../Button/Button";
 import Profiles from "../Profiles/Profiles";
 import styles from "./Hero.module.scss";
 import { MENULINKS, TYPED_STRINGS } from "../../constants";
-import { motion } from "framer-motion";
-import ResumeModal from "../ResumeModal/ResumeModal";
 
 const options = {
   strings: TYPED_STRINGS,
@@ -19,7 +17,6 @@ const options = {
 
 const Hero = () => {
   const [lottie, setLottie] = useState(null);
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
 
   const sectionRef = useRef(null);
   const typedElementRef = useRef(null);
@@ -110,7 +107,7 @@ const Hero = () => {
           <div className="staggered-reveal">
             <Profiles />
           </div>
-          <div className="staggered-reveal pt-4 flex gap-4">
+          <div className="staggered-reveal pt-4 flex gap-4 flex-wrap">
             <Button 
               href={`#${MENULINKS[4].ref}`} 
               classes="link" 
@@ -118,20 +115,13 @@ const Hero = () => {
             >
               Let&apos;s Talk
             </Button>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <Button 
+              href={`#${MENULINKS[2].ref}`} 
+              classes="link" 
+              type="secondary"
             >
-              <Button 
-                onClick={() => setIsResumeOpen(true)}
-                classes="link group" 
-                type="secondary"
-              >
-                <span className="group-hover:translate-x-[-2px] transition-transform duration-200">
-                  Resume
-                </span>
-              </Button>
-            </motion.div>
+              View Projects
+            </Button>
           </div>
         </div>
         <div
@@ -148,10 +138,59 @@ const Hero = () => {
         />
       </section>
 
-      <ResumeModal 
-        isOpen={isResumeOpen} 
-        onClose={() => setIsResumeOpen(false)} 
-      />
+      {/* Sticky Resume Button - Vertical */}
+      <div className="fixed right-0 bottom-32 z-50">
+        <a
+          href="https://drive.google.com/file/d/19FSSKoDYYVzD-LVAL_kRFftf_x5XHfrP/view?usp=drive_link"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group relative flex items-center justify-center bg-gradient-to-b from-purple-600 to-indigo-600 
+            hover:from-purple-500 hover:to-indigo-500 shadow-lg hover:shadow-2xl 
+            transition-all duration-300 ease-out transform hover:scale-105 hover:-translate-x-1
+            border-2 border-purple-400/30 hover:border-purple-300/60 backdrop-blur-sm
+            before:absolute before:inset-0 before:bg-gradient-to-b 
+            before:from-purple-400 before:to-indigo-400 before:opacity-0 before:blur-md 
+            before:transition-opacity before:duration-300 hover:before:opacity-20"
+          style={{
+            writingMode: 'vertical-lr',
+            textOrientation: 'mixed',
+            padding: '1rem 0.75rem',
+            borderTopLeftRadius: '0.75rem',
+            borderBottomLeftRadius: '0.75rem',
+            borderTopRightRadius: '0',
+            borderBottomRightRadius: '0',
+            minHeight: '120px',
+            width: '48px'
+          }}
+        >
+          {/* Resume Text */}
+          <span className="text-white font-mono text-sm font-medium tracking-wider
+            transition-all duration-300 group-hover:text-purple-100">
+            RESUME
+          </span>
+
+          {/* Tooltip */}
+          <div className="absolute right-12 top-1/2 transform -translate-y-1/2 px-3 py-2 
+            bg-black/90 text-white text-sm rounded-lg font-mono whitespace-nowrap
+            opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out
+            translate-x-2 group-hover:translate-x-0 pointer-events-none
+            border border-purple-500/30 shadow-xl backdrop-blur-sm">
+            View Resume
+            <div className="absolute left-full top-1/2 transform -translate-y-1/2 
+              border-4 border-transparent border-l-black/90"></div>
+          </div>
+
+          {/* Pulse animation */}
+          <div className="absolute inset-0 bg-purple-500/30 
+            animate-ping opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            style={{
+              borderTopLeftRadius: '0.75rem',
+              borderBottomLeftRadius: '0.75rem',
+              borderTopRightRadius: '0',
+              borderBottomRightRadius: '0',
+            }}></div>
+        </a>
+      </div>
     </>
   );
 };
