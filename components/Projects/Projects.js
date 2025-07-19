@@ -56,7 +56,7 @@ const Projects = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="text-center mb-20 px-6"
         >
-          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text"
+          <h2 className="text-7xl font-bold gradient-text"
             style={{
               background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
               WebkitBackgroundClip: "text",
