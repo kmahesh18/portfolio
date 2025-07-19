@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MENULINKS, PROJECTS } from "../../constants";
 import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
@@ -56,7 +56,7 @@ const Projects = () => {
           transition={{ duration: 1.2, ease: "easeOut" }}
           className="text-center mb-20 px-6"
         >
-          <h2 className="text-7xl font-bold gradient-text"
+          <h2 className="text-4xl md:text-6xl lg:text-7xl font-bold gradient-text"
             style={{
               background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
               WebkitBackgroundClip: "text",
@@ -68,11 +68,11 @@ const Projects = () => {
           </h2>
         </motion.div>
 
-        {/* Animated Projects Container */}
+        {/* Animated Projects Container - Testimonials Style */}
         <div className="mx-auto max-w-sm px-4 py-10 font-sans antialiased md:max-w-6xl md:px-8 lg:px-12">
           <div className="relative grid grid-cols-1 gap-20 lg:grid-cols-2">
             
-            {/* Project Images Section */}
+            {/* Project Images Section - Stacked Animation */}
             <div>
               <div className="relative h-96 w-full md:h-[500px]">
                 <AnimatePresence>
@@ -126,21 +126,23 @@ const Projects = () => {
                           <img
                             src={project.image}
                             alt={project.name}
+                            width={500}
+                            height={500}
                             className="h-full w-full object-cover object-center"
                             draggable={false}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           
                           {/* Quick Action Buttons */}
-                          <div className="absolute bottom-3 right-3 flex gap-2">
+                          <div className="absolute bottom-14 right-4 flex gap-2">
                             {project.github && (
                               <a
                                 href={project.github}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center justify-center w-9 h-9 rounded-full bg-purple-500/25 hover:bg-purple-500/40
+                                className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500/30 hover:bg-purple-500/50
                                   text-purple-200 backdrop-blur-md transition-all duration-200
-                                  hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] border border-purple-500/40 hover:border-purple-500/60
+                                  hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] border border-purple-500/50 hover:border-purple-500/70
                                   hover:scale-110 active:scale-95"
                                 title="View Code"
                               >
@@ -154,9 +156,9 @@ const Projects = () => {
                                 href={project.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center justify-center w-9 h-9 rounded-full bg-purple-500/25 hover:bg-purple-500/40
+                                className="flex items-center justify-center w-10 h-10 rounded-full bg-purple-500/30 hover:bg-purple-500/50
                                   text-purple-200 backdrop-blur-md transition-all duration-200
-                                  hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] border border-purple-500/40 hover:border-purple-500/60
+                                  hover:shadow-[0_0_20px_rgba(139,92,246,0.6)] border border-purple-500/50 hover:border-purple-500/70
                                   hover:scale-110 active:scale-95"
                                 title="Live Demo"
                               >
@@ -174,7 +176,7 @@ const Projects = () => {
               </div>
             </div>
 
-            {/* Project Details Section */}
+            {/* Project Details Section - Testimonials Style */}
             <div className="flex flex-col justify-between py-4">
               <motion.div
                 key={active}
@@ -203,65 +205,33 @@ const Projects = () => {
                   <span className="text-white"> {`{`}</span>
                 </div>
                 
-                <div className="ml-6 space-y-3 mt-3">
+                <div className="ml-6 space-y-4 mt-4">
+                  {/* Project Name */}
                   <div className="hover:translate-x-2 transition-transform duration-200">
                     <span className="text-[#4AE3B5]">name:</span>
-                    <motion.span className="text-yellow-300 text-lg font-semibold">
-                      {PROJECTS[active].name.split("").map((char, index) => (
-                        <motion.span
-                          key={index}
-                          initial={{
-                            filter: "blur(10px)",
-                            opacity: 0,
-                            y: 5,
-                          }}
-                          animate={{
-                            filter: "blur(0px)",
-                            opacity: 1,
-                            y: 0,
-                          }}
-                          transition={{
-                            duration: 0.2,
-                            ease: "easeInOut",
-                            delay: 0.02 * index,
-                          }}
-                          className="inline-block"
-                        >
-                          {char === " " ? "\u00A0" : char}
-                        </motion.span>
-                      ))}
-                    </motion.span>
-                    <span className="text-white">,</span>
+                    <h3 className="text-2xl font-bold text-yellow-300 dark:text-yellow-300 mt-2">
+                      &apos;{PROJECTS[active].name}&apos;
+                    </h3>
                   </div>
 
+                  {/* Technologies */}
                   <div className="hover:translate-x-2 transition-transform duration-200">
-                    <span className="text-[#4AE3B5]">tools:</span>
-                    <span className="text-white"> [</span>
-                    <div className="ml-4 flex flex-wrap gap-1">
-                      {PROJECTS[active].tech.map((tool, i) => (
-                        <motion.span
-                          key={tool}
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: 0.1 * i, duration: 0.3 }}
-                          className="text-yellow-300 hover:text-yellow-200 transition-colors duration-200"
-                        >
-                          &apos;{tool}&apos;
-                          {i < PROJECTS[active].tech.length - 1 ? <span className="text-white">, </span> : ''}
-                        </motion.span>
-                      ))}
-                    </div>
-                    <span className="text-white">],</span>
+                    <span className="text-[#4AE3B5]">technologies:</span>
+                    <p className="text-sm text-orange-400 dark:text-orange-400 mt-1">
+                      [{PROJECTS[active].tech.join(', ')}]
+                    </p>
                   </div>
 
+                  {/* Role */}
                   <div className="hover:translate-x-2 transition-transform duration-200">
                     <span className="text-[#4AE3B5]">myRole:</span>
-                    <span className="text-orange-400"> &apos;Full Stack Developer&apos;,</span>
+                    <span className="text-orange-400 ml-2">&apos;Full Stack Developer&apos;,</span>
                   </div>
 
+                  {/* Description with animated text */}
                   <div className="hover:translate-x-2 transition-transform duration-200">
-                    <span className="text-[#4AE3B5]">description: </span>
-                    <motion.div className="text-cyan-400 ml-4 leading-relaxed mt-2">
+                    <span className="text-[#4AE3B5]">description:</span>
+                    <motion.div className="mt-4 text-lg text-cyan-400 dark:text-cyan-300 leading-relaxed">
                       &apos;
                       {PROJECTS[active].description.split(" ").map((word, index) => (
                         <motion.span
@@ -291,7 +261,7 @@ const Projects = () => {
                   </div>
                 </div>
                 
-                <div className="text-white mt-4">{`};`}</div>
+                <div className="text-white mt-6">{`};`}</div>
 
                 {/* Action Buttons */}
                 <div className="flex gap-3 mt-8">
@@ -330,8 +300,8 @@ const Projects = () => {
                 </div>
               </motion.div>
 
-              {/* Navigation Controls */}
-              <div className="flex items-center justify-between pt-12 lg:pt-8">
+              {/* Navigation Controls - Testimonials Style */}
+              <div className="flex items-center justify-between pt-12 lg:pt-0">
                 <div className="flex gap-4">
                   <button
                     onClick={handlePrev}
@@ -357,10 +327,10 @@ const Projects = () => {
                   </button>
                 </div>
 
-                {/* Project Counter & Autoplay Toggle */}
+                {/* Project Indicators */}
                 <div className="flex items-center gap-4">
                   <span className="text-purple-300 font-mono text-sm">
-                    {active + 1} / {PROJECTS.length}
+                    {active + 1} of {PROJECTS.length}
                   </span>
                   <button
                     onClick={() => setAutoplay(!autoplay)}

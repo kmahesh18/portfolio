@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import Image from "next/image";
 
 const LottieSection = () => {
   const [lottie, setLottie] = useState(null);
@@ -135,7 +136,7 @@ const LottieSection = () => {
               Currently Vibing
             </h2>
             <p className="text-gray-400 text-lg font-mono">
-              Music fuels creativity • Here's what's playing in my dev space
+              Music fuels creativity ! Heres whats playing in my dev space
             </p>
           </motion.div>
 
@@ -188,7 +189,15 @@ const LottieSection = () => {
             >
               {/* Current Track Display */}
               {currentTrack && (
-                <div className="bg-gradient-to-br from-gray-900/90 to-black rounded-2xl p-6 border border-green-500/30 backdrop-blur-sm shadow-[0_25px_60px_rgba(29,185,84,0.2)]">
+                <motion.div 
+                  className="bg-gradient-to-br from-gray-900/90 to-black rounded-2xl p-6 border border-green-500/30 backdrop-blur-sm shadow-[0_25px_60px_rgba(29,185,84,0.2)]"
+                  whileHover={{ 
+                    scale: 1.02,
+                    boxShadow: "0 35px 80px rgba(29,185,84,0.3)",
+                    borderColor: "rgba(29,185,84,0.5)"
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
                   <div className="flex items-center gap-4 mb-4">
                     <div className={`w-3 h-3 rounded-full ${isPlaying ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}`}></div>
                     <span className={`font-mono text-sm ${isPlaying ? 'text-green-400' : 'text-gray-400'}`}>
@@ -197,24 +206,40 @@ const LottieSection = () => {
                   </div>
                   
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/30 to-purple-500/30 flex items-center justify-center border border-green-500/20 overflow-hidden">
+                    <motion.div 
+                      className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/30 to-purple-500/30 flex items-center justify-center border border-green-500/20 overflow-hidden"
+                      whileHover={{ scale: 1.1, rotate: 2 }}
+                      transition={{ duration: 0.2 }}
+                    >
                       {currentTrack.image ? (
-                        <img src={currentTrack.image} alt={currentTrack.album} className="w-full h-full object-cover" />
+                        <Image src={currentTrack.image} alt={currentTrack.album} className="w-full h-full object-cover" />
                       ) : (
                         <svg className="w-8 h-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                         </svg>
                       )}
-                    </div>
+                    </motion.div>
                     <div className="flex-1">
-                      <h3 className="text-white font-semibold text-lg truncate">{currentTrack.name}</h3>
-                      <p className="text-gray-400 truncate">{currentTrack.artist}</p>
+                      <motion.h3 
+                        className="text-white font-semibold text-lg truncate"
+                        whileHover={{ color: "#4ade80" }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {currentTrack.name}
+                      </motion.h3>
+                      <motion.p 
+                        className="text-gray-400 truncate"
+                        whileHover={{ color: "#a3a3a3" }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {currentTrack.artist}
+                      </motion.p>
                       <p className="text-gray-500 text-sm truncate">{currentTrack.album}</p>
                     </div>
                     {isPlaying && (
                       <div className="flex items-center gap-1">
                         {[...Array(4)].map((_, i) => (
-                          <div
+                          <motion.div
                             key={i}
                             className="w-1 bg-green-400 rounded-full animate-pulse"
                             style={{ 
@@ -222,6 +247,7 @@ const LottieSection = () => {
                               animationDelay: `${i * 0.2}s`,
                               animationDuration: `${0.8 + Math.random() * 0.4}s`
                             }}
+                            whileHover={{ scale: 1.2 }}
                           />
                         ))}
                       </div>
@@ -229,54 +255,96 @@ const LottieSection = () => {
                   </div>
 
                   {currentTrack.songUrl && (
-                    <a
+                    <motion.a
                       href={currentTrack.songUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-semibold transition-all duration-200 hover:scale-105"
+                      className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-semibold transition-all duration-200"
+                      whileHover={{ scale: 1.05, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                         <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.599 0-.36.24-.66.54-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.242 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
                       </svg>
                       Open in Spotify
-                    </a>
+                    </motion.a>
                   )}
-                </div>
+                </motion.div>
               )}
 
               {/* Coding Stats */}
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20">
-                  <div className="text-2xl font-bold text-purple-400 mb-1">1000+</div>
+                <motion.div 
+                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20"
+                  whileHover={{ 
+                    scale: 1.02, 
+                    borderColor: "rgba(139,92,246,0.4)",
+                    boxShadow: "0 10px 30px rgba(139,92,246,0.2)"
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.div 
+                    className="text-2xl font-bold text-purple-400 mb-1"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    10+
+                  </motion.div>
                   <div className="text-gray-400 text-sm font-mono">Hours Coded</div>
-                </div>
-                <div className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-green-500/20">
-                  <div className="text-2xl font-bold text-green-400 mb-1">∞</div>
+                </motion.div>
+                <motion.div 
+                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-green-500/20"
+                  whileHover={{ 
+                    scale: 1.02, 
+                    borderColor: "rgba(34,197,94,0.4)",
+                    boxShadow: "0 10px 30px rgba(34,197,94,0.2)"
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <motion.div 
+                    className="text-2xl font-bold text-green-400 mb-1"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    ∞
+                  </motion.div>
                   <div className="text-gray-400 text-sm font-mono">Spotify Tracks</div>
-                </div>
+                </motion.div>
               </div>
 
               {/* Favorite Coding Genres */}
-              <div className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20">
+              <motion.div 
+                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20"
+                whileHover={{ 
+                  scale: 1.01, 
+                  borderColor: "rgba(139,92,246,0.4)",
+                  boxShadow: "0 15px 40px rgba(139,92,246,0.15)"
+                }}
+                transition={{ duration: 0.3 }}
+              >
                 <h4 className="text-white font-semibold mb-3">My Coding Soundtrack</h4>
                 <div className="flex flex-wrap gap-2">
                   {['Lo-Fi Hip Hop', 'Synthwave', 'Ambient', 'Electronic', 'Jazz Hop', 'Chill Beats'].map((genre) => (
-                    <span
+                    <motion.span
                       key={genre}
-                      className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm font-mono border border-green-500/30 hover:bg-green-500/30 transition-colors duration-200"
+                      className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm font-mono border border-green-500/30 transition-colors duration-200 cursor-pointer"
+                      whileHover={{ 
+                        scale: 1.05,
+                        backgroundColor: "rgba(34,197,94,0.3)",
+                        color: "#4ade80"
+                      }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       {genre}
-                    </span>
+                    </motion.span>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
               {/* Connect Spotify / Error Display */}
               {error ? (
                 <motion.button
                   onClick={handleSpotifyLogin}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-all duration-200 hover:scale-105 hover:shadow-lg"
-                  whileHover={{ scale: 1.02 }}
+                  className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-all duration-200"
+                  whileHover={{ scale: 1.02, y: -2, boxShadow: "0 10px 30px rgba(34,197,94,0.3)" }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -285,20 +353,39 @@ const LottieSection = () => {
                   Connect Spotify for Live Updates
                 </motion.button>
               ) : (
-                <div className="text-center">
+                <motion.div 
+                  className="text-center"
+                  whileHover={{ scale: 1.02 }}
+                >
                   <p className="text-gray-500 text-sm font-mono">
                     🎵 Live Spotify integration active
                   </p>
-                </div>
+                </motion.div>
               )}
 
               {/* Developer Quote */}
-              <div className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20">
-                <blockquote className="text-gray-300 italic font-mono text-sm">
-                  "Code flows better with the right soundtrack. Every bug fix has its beat, every feature its rhythm."
-                </blockquote>
-                <div className="text-purple-400 text-right mt-2 text-sm">- Mahesh Kumar</div>
-              </div>
+              <motion.div 
+                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20"
+                whileHover={{ 
+                  scale: 1.01, 
+                  borderColor: "rgba(139,92,246,0.4)",
+                  boxShadow: "0 15px 40px rgba(139,92,246,0.15)"
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.blockquote 
+                  className="text-gray-300 italic font-mono text-sm"
+                  whileHover={{ color: "#d1d5db" }}
+                >
+                  Code flows better with the right soundtrack. Every bug fix has its beat, every feature its rhythm.
+                </motion.blockquote>
+                <motion.div 
+                  className="text-purple-400 text-right mt-2 text-sm"
+                  whileHover={{ color: "#a855f7" }}
+                >
+                  - Mahesh Kumar
+                </motion.div>
+              </motion.div>
             </motion.div>
           </div>
         </div>

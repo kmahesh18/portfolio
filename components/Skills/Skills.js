@@ -2,7 +2,7 @@
 import React, { useState, useRef } from "react";
 import Image from "next/image";
 import { MENULINKS, SKILLS } from "../../constants";
-import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const AnimatedSkillTooltip = ({ items }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -18,53 +18,22 @@ const AnimatedSkillTooltip = ({ items }) => {
               onMouseEnter={() => setHoveredIndex(item.id)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <AnimatePresence>
-                {hoveredIndex === item.id && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20, scale: 0.6 }}
-                    animate={{
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      transition: {
-                        type: "spring",
-                        stiffness: 260,
-                        damping: 10,
-                      },
-                    }}
-                    exit={{ opacity: 0, y: 20, scale: 0.6 }}
-                    className="absolute -top-14 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center justify-center rounded-lg bg-gradient-to-br from-purple-900/95 to-black/95 backdrop-blur-sm px-3 py-2 text-xs shadow-2xl"
-                  >
-                    <div className="absolute inset-x-3 -bottom-px z-30 h-px w-[60%] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-                    <div className="absolute -bottom-px left-3 z-30 h-px w-[30%] bg-gradient-to-r from-transparent via-violet-400 to-transparent" />
-                    <div className="relative z-30 text-sm font-bold text-white">
-                      {item.name}
-                    </div>
-                    <div className="text-xs text-purple-300">{item.category}</div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {/* Simplified tooltip */}
+              {hoveredIndex === item.id && (
+                <div className="absolute -top-14 left-1/2 z-50 flex -translate-x-1/2 flex-col items-center justify-center rounded-lg bg-gradient-to-br from-purple-900/95 to-black/95 backdrop-blur-sm px-3 py-2 text-xs shadow-2xl opacity-100 transition-opacity duration-200">
+                  <div className="absolute inset-x-3 -bottom-px z-30 h-px w-[60%] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
+                  <div className="relative z-30 text-sm font-bold text-white">
+                    {item.name}
+                  </div>
+                  <div className="text-xs text-purple-300">{item.category}</div>
+                </div>
+              )}
               
-              <motion.div
-                className="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-violet-900/60 to-violet-800/80 rounded-xl overflow-hidden transition-all duration-300 backdrop-blur-sm cursor-pointer m-1"
-                animate={{
-                  y: [0, -8, 0],
-                }}
-                transition={{
-                  y: {
-                    duration: 2 + (idx % 3),
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: idx * 0.2
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.15,
-                  y: -12,
-                  boxShadow: "0 0 40px rgba(139, 92, 246, 0.8)",
-                }}
+              {/* Simplified skill icon animation */}
+              <div
+                className="relative w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-violet-900/60 to-violet-800/80 rounded-xl overflow-hidden transition-all duration-300 backdrop-blur-sm cursor-pointer m-1 hover:scale-110 hover:shadow-[0_0_40px_rgba(139,92,246,0.8)]"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-violet-500/20 animate-pulse" />
+                <div className="absolute inset-0 bg-gradient-to-r from-violet-500/20 via-transparent to-violet-500/20" />
                 <Image
                   src={`/skills/${item.image}.svg`}
                   alt={item.name}
@@ -72,7 +41,7 @@ const AnimatedSkillTooltip = ({ items }) => {
                   className="p-2 md:p-2.5 filter brightness-95 group-hover:brightness-120 transition-all duration-300"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-violet-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-              </motion.div>
+              </div>
             </div>
           ))}
         </div>
@@ -143,7 +112,6 @@ const Skills = () => {
   });
   
   const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   return (
     <section
@@ -162,7 +130,7 @@ const Skills = () => {
         <motion.div
           initial={{ opacity: 0, y: -60 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2 }}
+          transition={{ duration: 0.8 }}
           className="mt-28 z-40"
         >
           <h2 className="text-7xl font-bold text-center mb-4 gradient-text"
@@ -187,7 +155,7 @@ const Skills = () => {
 
       {/* Skills Grid */}
       <motion.div 
-        style={{ opacity, y }}
+        style={{ opacity }}
         className="relative z-20"
       >
         <SkillsGrid />
