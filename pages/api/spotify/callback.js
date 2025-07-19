@@ -8,7 +8,10 @@ export default async function handler(req, res) {
   const { code } = req.query;
 
   if (!code) {
-    return res.status(400).json({ error: 'Authorization code is required' });
+    const homeUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://mahesh18.live/?spotify_error=no_code'
+      : 'https://mahesh-zeta.vercel.app/?spotify_error=no_code';
+    return res.redirect(homeUrl);
   }
 
   try {
@@ -28,19 +31,34 @@ export default async function handler(req, res) {
     const data = await response.json();
 
     if (data.error) {
-      return res.status(400).json({ error: data.error_description });
+      const homeUrl = process.env.NODE_ENV === 'production' 
+        ? 'https://mahesh18.live/?spotify_error=auth_failed'
+        : 'https://mahesh-zeta.vercel.app/?spotify_error=auth_failed';
+      return res.redirect(homeUrl);
     }
 
-    // In production, you'd want to store the refresh_token securely
-    // For now, we'll return it so you can add it to your environment variables
-    res.status(200).json({
-      message: 'Success! Add this refresh token to your environment variables:',
-      refresh_token: data.refresh_token,
-      access_token: data.access_token,
-    });
+    // If you're in development and need to see the refresh token, show it
+    if (process.env.NODE_ENV !== 'production') {
+      return res.status(200).json({
+        message: 'Success! Add this refresh token to your environment variables:',
+        refresh_token: data.refresh_token,
+        access_token: data.access_token,
+        note: 'In production, this will redirect to your homepage with success indicator'
+      });
+    }
+
+    // In production, redirect to homepage with success indicator
+    const homeUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://mahesh18.live/?spotify_connected=true'
+      : 'https://mahesh-zeta.vercel.app/?spotify_connected=true';
+    
+    res.redirect(homeUrl);
 
   } catch (error) {
     console.error('Error exchanging code for token:', error);
-    res.status(500).json({ error: 'Failed to exchange authorization code' });
+    const homeUrl = process.env.NODE_ENV === 'production' 
+      ? 'https://mahesh18.live/?spotify_error=server_error'
+      : 'https://mahesh-zeta.vercel.app/?spotify_error=server_error';
+    return res.redirect(homeUrl);
   }
 }
