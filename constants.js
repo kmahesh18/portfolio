@@ -91,10 +91,10 @@ export const SKILLS = {
     "tailwindcss",
     "bootstrap",
     "redux",
-    "sass",
+    // "sass",
     "styledcomponents",
-    "chakra-ui",
-    "antdesign"
+    // "chakra-ui",
+    // "antdesign"
   ],
   databases: [
     "mongodb",
@@ -105,7 +105,7 @@ export const SKILLS = {
   Tools: [
     "nodejs",
     "express",
-    "graphql",
+    // "graphql",
     "socketio",
     "webrtc",
     "aws",
@@ -115,15 +115,15 @@ export const SKILLS = {
     "github",
     "linux",
     "postman",
-    "jest",
+    // "jest",
     "vercel",
     "vite",
-    "webpack",
+    // "webpack",
     "firebase",
-    "figma",
-    "sanity-io",
+    // "figma",
+    // "sanity-io",
     "rendor",
-    "tanstack-query"
+    // "tanstack-query"
   ],
 };
 

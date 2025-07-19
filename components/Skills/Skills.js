@@ -65,8 +65,8 @@ const SkillsGrid = () => {
             skill === "nextjs" ? "Next.js" : 
             skill === "tailwindcss" ? "Tailwind CSS" :
             skill === "styledcomponents" ? "Styled Components" :
-            skill === "chakra-ui" ? "Chakra UI" :
-            skill === "antdesign" ? "Ant Design" :
+            // skill === "chakra-ui" ? "Chakra UI" :
+            // skill === "antdesign" ? "Ant Design" :
             skill.charAt(0).toUpperCase() + skill.slice(1),
       category: "Frameworks & Libraries",
       image: skill
@@ -87,8 +87,8 @@ const SkillsGrid = () => {
             skill === "postman" ? "Postman" :
             skill === "socketio" ? "Socket.IO" :
             skill === "webrtc" ? "WebRTC" :
-            skill === "sanity-io" ? "Sanity" :
-            skill === "tanstack-query" ? "TanStack Query" :
+            // skill === "sanity-io" ? "Sanity" :
+            // skill === "tanstack-query" ? "TanStack Query" :
             skill === "github" ? "GitHub" :
             skill === "vercel" ? "Vercel" :
             skill.charAt(0).toUpperCase() + skill.slice(1),

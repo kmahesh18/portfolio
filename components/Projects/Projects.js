@@ -4,10 +4,63 @@ import { motion, AnimatePresence } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 
+const LazyImage = ({ src, alt, className, ...props }) => {
+  const [imageSrc, setImageSrc] = useState(null);
+  const [imageRef, setImageRef] = useState();
+
+  useEffect(() => {
+    let observer;
+    
+    if (imageRef && imageSrc !== src) {
+      if (IntersectionObserver) {
+        observer = new IntersectionObserver(
+          entries => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                setImageSrc(src);
+                observer.unobserve(imageRef);
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        observer.observe(imageRef);
+      } else {
+        setImageSrc(src);
+      }
+    }
+    return () => {
+      if (observer && observer.unobserve) {
+        observer.unobserve(imageRef);
+      }
+    };
+  }, [src, imageSrc, imageRef]);
+
+  return (
+    <div ref={setImageRef} className={className} {...props}>
+      {imageSrc ? (
+        <img
+          src={imageSrc}
+          alt={alt}
+          className="h-full w-full object-cover object-center transition-opacity duration-500"
+          style={{ opacity: imageSrc ? 1 : 0 }}
+          draggable={false}
+          loading="lazy"
+        />
+      ) : (
+        <div className="h-full w-full bg-gray-800/50 animate-pulse flex items-center justify-center">
+          <div className="text-gray-600 text-sm">Loading...</div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Projects = () => {
   const targetSection = useRef(null);
   const [active, setActive] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % PROJECTS.length);
@@ -37,6 +90,22 @@ const Projects = () => {
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
+  }, []);
+
+  // Intersection Observer for section visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    if (targetSection.current) {
+      observer.observe(targetSection.current);
+    }
+
+    return () => observer.disconnect();
   }, []);
 
   return (
@@ -72,7 +141,7 @@ const Projects = () => {
         <div className="mx-auto max-w-sm px-4 py-10 font-sans antialiased md:max-w-6xl md:px-8 lg:px-12">
           <div className="relative grid grid-cols-1 gap-20 lg:grid-cols-2">
             
-            {/* Project Images Section - Stacked Animation */}
+            {/* Project Images Section - Stacked Animation with Lazy Loading */}
             <div>
               <div className="relative h-96 w-full md:h-[500px]">
                 <AnimatePresence>
@@ -121,15 +190,12 @@ const Projects = () => {
                           </span>
                         </div>
 
-                        {/* Project Image */}
+                        {/* Project Image with Lazy Loading */}
                         <div className="relative h-full overflow-hidden">
-                          <img
+                          <LazyImage
                             src={project.image}
                             alt={project.name}
-                            width={500}
-                            height={500}
-                            className="h-full w-full object-cover object-center"
-                            draggable={false}
+                            className="h-full w-full"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           

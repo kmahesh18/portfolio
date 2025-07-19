@@ -223,7 +223,7 @@ const LottieSection = () => {
 
             {/* Spotify Integration Side */}
             <motion.div
-              className="animate-in space-y-8"
+              className="animate-in space-y-6"
               initial={{ opacity: 0, x: 100, scale: 0.9 }}
               whileInView={{ 
                 opacity: 1, 
@@ -240,7 +240,7 @@ const LottieSection = () => {
             >
               {/* Current Track Display - Updated */}
               <motion.div 
-                className={`bg-gradient-to-br from-gray-900/90 to-black rounded-2xl p-6 border backdrop-blur-sm ${
+                className={`bg-gradient-to-br from-gray-900/90 to-black rounded-2xl p-4 border backdrop-blur-sm ${
                   isConnected && currentTrack ? 'border-green-500/30 shadow-[0_25px_60px_rgba(29,185,84,0.2)]' : 'border-gray-500/30'
                 }`}
                 initial={{ opacity: 0, y: 30, rotateX: -15 }}
@@ -263,7 +263,7 @@ const LottieSection = () => {
                 }}
                 viewport={{ once: true }}
               >
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-4">
                     <div className={`w-3 h-3 rounded-full ${
                       isLoading ? 'bg-yellow-500 animate-pulse' :
@@ -299,14 +299,21 @@ const LottieSection = () => {
                 </div>
                 
                 {isConnected && currentTrack ? (
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-3">
                     <motion.div 
-                      className="w-16 h-16 rounded-lg bg-gradient-to-br from-green-500/30 to-purple-500/30 flex items-center justify-center border border-green-500/20 overflow-hidden"
+                      className="w-14 h-14 rounded-lg bg-gradient-to-br from-green-500/30 to-purple-500/30 flex items-center justify-center border border-green-500/20 overflow-hidden"
                       whileHover={{ scale: 1.1, rotate: 2 }}
                       transition={{ duration: 0.2 }}
                     >
                       {currentTrack.image ? (
-                        <Image src={currentTrack.image} alt={currentTrack.album} width={64} height={64} className="w-full h-full object-cover rounded-lg" />
+                        <Image 
+                          src={currentTrack.image} 
+                          alt={currentTrack.album} 
+                          width={64} 
+                          height={64} 
+                          className="w-full h-full object-cover rounded-lg"
+                          unoptimized={true}
+                        />
                       ) : (
                         <svg className="w-8 h-8 text-green-400" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
@@ -315,20 +322,20 @@ const LottieSection = () => {
                     </motion.div>
                     <div className="flex-1">
                       <motion.h3 
-                        className="text-white font-semibold text-lg truncate"
+                        className="text-white font-semibold text-base truncate"
                         whileHover={{ color: "#4ade80" }}
                         transition={{ duration: 0.2 }}
                       >
                         {currentTrack.name}
                       </motion.h3>
                       <motion.p 
-                        className="text-gray-400 truncate"
+                        className="text-gray-400 truncate text-sm"
                         whileHover={{ color: "#a3a3a3" }}
                         transition={{ duration: 0.2 }}
                       >
                         {currentTrack.artist}
                       </motion.p>
-                      <p className="text-gray-500 text-sm truncate">{currentTrack.album}</p>
+                      <p className="text-gray-500 text-xs truncate">{currentTrack.album}</p>
                     </div>
                     {isPlaying && (
                       <div className="flex items-center gap-1">
@@ -348,8 +355,8 @@ const LottieSection = () => {
                     )}
                   </div>
                 ) : (
-                  <div className="text-center py-8">
-                    <svg className="w-12 h-12 text-gray-600 mx-auto mb-4" fill="currentColor" viewBox="0 0 24 24">
+                  <div className="text-center py-4">
+                    <svg className="w-10 h-10 text-gray-600 mx-auto mb-3" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                     </svg>
                     <p className="text-gray-400 text-sm">
@@ -366,7 +373,7 @@ const LottieSection = () => {
                     href={currentTrack.songUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-sm font-semibold transition-all duration-200"
+                    className="inline-flex items-center gap-2 mt-3 px-3 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-xs font-semibold transition-all duration-200"
                     whileHover={{ scale: 1.05, y: -2 }}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -380,14 +387,14 @@ const LottieSection = () => {
 
               {/* Coding Stats */}
               <motion.div 
-                className="grid grid-cols-2 gap-4"
+                className="grid grid-cols-2 gap-3"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.7 }}
                 viewport={{ once: true }}
               >
                 <motion.div 
-                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20"
+                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20"
                   initial={{ opacity: 0, x: -30, scale: 0.8 }}
                   whileInView={{ 
                     opacity: 1, 
@@ -409,15 +416,15 @@ const LottieSection = () => {
                   viewport={{ once: true }}
                 >
                   <motion.div 
-                    className="text-2xl font-bold text-purple-400 mb-1"
+                    className="text-xl font-bold text-purple-400 mb-1"
                     whileHover={{ scale: 1.1 }}
                   >
                     10+
                   </motion.div>
-                  <div className="text-gray-400 text-sm font-mono">Hours Coded</div>
+                  <div className="text-gray-400 text-xs font-mono">Hours Coded</div>
                 </motion.div>
                 <motion.div 
-                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-green-500/20"
+                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-green-500/20"
                   initial={{ opacity: 0, x: 30, scale: 0.8 }}
                   whileInView={{ 
                     opacity: 1, 
@@ -439,18 +446,18 @@ const LottieSection = () => {
                   viewport={{ once: true }}
                 >
                   <motion.div 
-                    className="text-2xl font-bold text-green-400 mb-1"
+                    className="text-xl font-bold text-green-400 mb-1"
                     whileHover={{ scale: 1.1 }}
                   >
                     ∞
                   </motion.div>
-                  <div className="text-gray-400 text-sm font-mono">Spotify Tracks</div>
+                  <div className="text-gray-400 text-xs font-mono">Spotify Tracks</div>
                 </motion.div>
               </motion.div>
 
-              {/* Favorite Coding Genres */}
+              {/* Follow My Spotify */}
               <motion.div 
-                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20"
+                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20"
                 initial={{ opacity: 0, y: 40, scale: 0.95 }}
                 whileInView={{ 
                   opacity: 1, 
@@ -472,50 +479,62 @@ const LottieSection = () => {
                 viewport={{ once: true }}
               >
                 <motion.h4 
-                  className="text-white font-semibold mb-3"
+                  className="text-white font-semibold mb-2 text-center text-sm"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.5, delay: 1.2 }}
                 >
-                  My Coding Soundtrack
+                  Follow My Spotify
                 </motion.h4>
-                <div className="flex flex-wrap gap-2">
-                  {['Lo-Fi Hip Hop', 'Synthwave', 'Ambient', 'Electronic', 'Jazz Hop', 'Chill Beats'].map((genre, index) => (
-                    <motion.span
-                      key={genre}
-                      className="px-3 py-1 bg-green-500/20 text-green-300 rounded-full text-sm font-mono border border-green-500/30 transition-colors duration-200 cursor-pointer"
-                      initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                      whileInView={{ 
-                        opacity: 1, 
-                        scale: 1, 
-                        y: 0,
-                        transition: {
-                          duration: 0.4,
-                          delay: 1.3 + index * 0.1,
-                          ease: "backOut"
-                        }
-                      }}
-                      whileHover={{ 
-                        scale: 1.08,
-                        y: -2,
-                        backgroundColor: "rgba(34,197,94,0.3)",
-                        color: "#4ade80",
-                        transition: { duration: 0.2 }
-                      }}
-                      whileTap={{ scale: 0.95 }}
-                      viewport={{ once: true }}
-                    >
-                      {genre}
-                    </motion.span>
-                  ))}
+                <div className="flex justify-center">
+                  <motion.a
+                    href="https://open.spotify.com/user/maheshkumar"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-full text-white font-semibold transition-all duration-200 text-xs"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ 
+                      opacity: 1, 
+                      scale: 1,
+                      transition: {
+                        duration: 0.4,
+                        delay: 1.3,
+                        ease: "backOut"
+                      }
+                    }}
+                    whileHover={{ 
+                      scale: 1.05,
+                      y: -2,
+                      boxShadow: "0 10px 25px rgba(34,197,94,0.3)",
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                    viewport={{ once: true }}
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.599 0-.36.24-.66.54-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.242 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
+                    </svg>
+                    <span>Follow on Spotify</span>
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </motion.a>
                 </div>
+                <motion.p 
+                  className="text-gray-400 text-xs text-center mt-2"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 0.5, delay: 1.5 }}
+                >
+                  Discover my playlists & music taste
+                </motion.p>
               </motion.div>
 
               {/* Connect Spotify / Status Display - Updated */}
               {!isConnected ? (
                 <motion.button
                   onClick={handleSpotifyLogin}
-                  className="w-full flex items-center justify-center gap-3 px-6 py-3 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-all duration-200"
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-all duration-200 text-sm"
                   initial={{ opacity: 0, y: 30, scale: 0.9 }}
                   whileInView={{ 
                     opacity: 1, 
@@ -548,73 +567,74 @@ const LottieSection = () => {
                   Connect Spotify for Live Updates
                 </motion.button>
               ) : (
-                <motion.div 
-                  className="text-center space-y-2"
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    y: 0,
-                    transition: {
-                      duration: 0.5,
-                      delay: 1.6,
-                      ease: "easeOut"
-                    }
-                  }}
-                  whileHover={{ scale: 1.02 }}
-                  viewport={{ once: true }}
-                >
-                  <motion.p 
-                    className="text-green-400 text-sm font-mono flex items-center justify-center gap-2"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 1.7 }}
-                  >
-                    <motion.span 
-                      className="w-2 h-2 bg-green-400 rounded-full"
-                      animate={{ 
-                        scale: [1, 1.2, 1],
-                        opacity: [1, 0.7, 1]
-                      }}
-                      transition={{ 
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    />
-                    🎵 Spotify connected
-                  </motion.p>
-                  <motion.div 
-                    className="flex items-center justify-center gap-4 text-xs text-gray-500"
-                    initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    transition={{ duration: 0.5, delay: 1.8 }}
-                  >
-                    <span>Auto-refresh: 10s</span>
-                    <motion.button 
-                      onClick={handleRefresh}
-                      className="text-green-400 hover:text-green-300 underline"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Refresh now
-                    </motion.button>
-                  </motion.div>
-                  {error && (
-                    <motion.p 
-                      className="text-yellow-400 text-xs"
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-                </motion.div>
+                <></>
+                // <motion.div 
+                //   className="text-center space-y-1"
+                //   initial={{ opacity: 0, y: 20 }}
+                //   whileInView={{ 
+                //     opacity: 1, 
+                //     y: 0,
+                //     transition: {
+                //       duration: 0.5,
+                //       delay: 1.6,
+                //       ease: "easeOut"
+                //     }
+                //   }}
+                //   whileHover={{ scale: 1.02 }}
+                //   viewport={{ once: true }}
+                // >
+                //   <motion.p 
+                //     className="text-green-400 text-sm font-mono flex items-center justify-center gap-2"
+                //     initial={{ opacity: 0 }}
+                //     whileInView={{ opacity: 1 }}
+                //     transition={{ duration: 0.5, delay: 1.7 }}
+                //   >
+                //     <motion.span 
+                //       className="w-2 h-2 bg-green-400 rounded-full"
+                //       animate={{ 
+                //         scale: [1, 1.2, 1],
+                //         opacity: [1, 0.7, 1]
+                //       }}
+                //       transition={{ 
+                //         duration: 2,
+                //         repeat: Infinity,
+                //         ease: "easeInOut"
+                //       }}
+                //     />
+                //     🎵 Spotify connected
+                //   </motion.p>
+                //   <motion.div 
+                //     className="flex items-center justify-center gap-4 text-xs text-gray-500"
+                //     initial={{ opacity: 0 }}
+                //     whileInView={{ opacity: 1 }}
+                //     transition={{ duration: 0.5, delay: 1.8 }}
+                //   >
+                //     <span>Auto-refresh: 10s</span>
+                //     <motion.button 
+                //       onClick={handleRefresh}
+                //       className="text-green-400 hover:text-green-300 underline"
+                //       whileHover={{ scale: 1.05 }}
+                //       whileTap={{ scale: 0.95 }}
+                //     >
+                //       Refresh now
+                //     </motion.button>
+                //   </motion.div>
+                //   {error && (
+                //     <motion.p 
+                //       className="text-yellow-400 text-xs"
+                //       initial={{ opacity: 0, scale: 0.9 }}
+                //       animate={{ opacity: 1, scale: 1 }}
+                //       transition={{ duration: 0.3 }}
+                //     >
+                //       {error}
+                //     </motion.p>
+                //   )}
+                // </motion.div>
               )}
 
               {/* Developer Quote */}
               <motion.div 
-                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-4 border border-purple-500/20"
+                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20"
                 initial={{ opacity: 0, y: 40, rotateX: -10 }}
                 whileInView={{ 
                   opacity: 1, 
@@ -636,7 +656,7 @@ const LottieSection = () => {
                 viewport={{ once: true }}
               >
                 <motion.blockquote 
-                  className="text-gray-300 italic font-mono text-sm"
+                  className="text-gray-300 italic font-mono text-xs"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   transition={{ duration: 0.6, delay: 2.1 }}
@@ -645,7 +665,7 @@ const LottieSection = () => {
                   Code flows better with the right soundtrack. Every bug fix has its beat, every feature its rhythm.
                 </motion.blockquote>
                 <motion.div 
-                  className="text-purple-400 text-right mt-2 text-sm"
+                  className="text-purple-400 text-right mt-1 text-xs"
                   initial={{ opacity: 0, x: 20 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 2.3 }}
