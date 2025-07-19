@@ -488,7 +488,7 @@ const LottieSection = () => {
                 </motion.h4>
                 <div className="flex justify-center">
                   <motion.a
-                    href="https://open.spotify.com/user/maheshkumar"
+                    href="https://open.spotify.com/user/31xbtibxhkueqre6tx2yj5bo5msq?si=hVVl6_apSvSI9JXaQMLbjA"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-full text-white font-semibold transition-all duration-200 text-xs"

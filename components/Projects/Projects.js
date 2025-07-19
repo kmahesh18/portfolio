@@ -1,66 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { MENULINKS, PROJECTS } from "../../constants";
 import { motion, AnimatePresence } from "framer-motion";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-
-const LazyImage = ({ src, alt, className, ...props }) => {
-  const [imageSrc, setImageSrc] = useState(null);
-  const [imageRef, setImageRef] = useState();
-
-  useEffect(() => {
-    let observer;
-    
-    if (imageRef && imageSrc !== src) {
-      if (IntersectionObserver) {
-        observer = new IntersectionObserver(
-          entries => {
-            entries.forEach(entry => {
-              if (entry.isIntersecting) {
-                setImageSrc(src);
-                observer.unobserve(imageRef);
-              }
-            });
-          },
-          { threshold: 0.1 }
-        );
-        observer.observe(imageRef);
-      } else {
-        setImageSrc(src);
-      }
-    }
-    return () => {
-      if (observer && observer.unobserve) {
-        observer.unobserve(imageRef);
-      }
-    };
-  }, [src, imageSrc, imageRef]);
-
-  return (
-    <div ref={setImageRef} className={className} {...props}>
-      {imageSrc ? (
-        <img
-          src={imageSrc}
-          alt={alt}
-          className="h-full w-full object-cover object-center transition-opacity duration-500"
-          style={{ opacity: imageSrc ? 1 : 0 }}
-          draggable={false}
-          loading="lazy"
-        />
-      ) : (
-        <div className="h-full w-full bg-gray-800/50 animate-pulse flex items-center justify-center">
-          <div className="text-gray-600 text-sm">Loading...</div>
-        </div>
-      )}
-    </div>
-  );
-};
 
 const Projects = () => {
   const targetSection = useRef(null);
   const [active, setActive] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
-  const [isVisible, setIsVisible] = useState(false);
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % PROJECTS.length);
@@ -85,29 +30,6 @@ const Projects = () => {
     }
   }, [autoplay]);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, []);
-
-  // Intersection Observer for section visibility
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
-      { threshold: 0.1 }
-    );
-
-    if (targetSection.current) {
-      observer.observe(targetSection.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <>
       {/* Section Spacing */}
@@ -119,29 +41,22 @@ const Projects = () => {
         className="relative bg-black py-20"
       >
         {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -60 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: "easeOut" }}
-          className="text-center mb-20 px-6"
-        >
+        <div className="text-center mb-20 px-6">
           <h2 className="text-7xl font-bold gradient-text"
             style={{
               background: "linear-gradient(135deg, #9F7AEA 0%, #4C1D95 50%, #9F7AEA 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
-              backgroundSize: "200% auto",
-              animation: "shine 5s linear infinite",
             }}>
             Projects
           </h2>
-        </motion.div>
+        </div>
 
-        {/* Animated Projects Container - Testimonials Style */}
+        {/* Projects Container */}
         <div className="mx-auto max-w-sm px-4 py-10 font-sans antialiased md:max-w-6xl md:px-8 lg:px-12">
           <div className="relative grid grid-cols-1 gap-20 lg:grid-cols-2">
             
-            {/* Project Images Section - Stacked Animation with Lazy Loading */}
+            {/* Project Images Section */}
             <div>
               <div className="relative h-96 w-full md:h-[500px]">
                 <AnimatePresence>
@@ -182,20 +97,21 @@ const Projects = () => {
                         
                         {/* Project Header */}
                         <div className="bg-black/60 px-4 py-2 flex items-center gap-2 border-b border-purple-500/20">
-                          <motion.div className="w-2 h-2 rounded-full bg-[#FF605C]" whileHover={{ scale: 1.3 }} />
-                          <motion.div className="w-2 h-2 rounded-full bg-[#FFBD44]" whileHover={{ scale: 1.3 }} />
-                          <motion.div className="w-2 h-2 rounded-full bg-[#00CA4E]" whileHover={{ scale: 1.3 }} />
+                          <div className="w-2 h-2 rounded-full bg-[#FF605C]" />
+                          <div className="w-2 h-2 rounded-full bg-[#FFBD44]" />
+                          <div className="w-2 h-2 rounded-full bg-[#00CA4E]" />
                           <span className="ml-2 text-[#4AE3B5] font-mono text-sm font-semibold truncate">
                             {project.name}
                           </span>
                         </div>
 
-                        {/* Project Image with Lazy Loading */}
+                        {/* Project Image - Direct Loading */}
                         <div className="relative h-full overflow-hidden">
-                          <LazyImage
+                          <img
                             src={project.image}
                             alt={project.name}
-                            className="h-full w-full"
+                            className="h-full w-full object-cover object-center"
+                            draggable={false}
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           
@@ -242,7 +158,7 @@ const Projects = () => {
               </div>
             </div>
 
-            {/* Project Details Section - Testimonials Style */}
+            {/* Project Details Section */}
             <div className="flex flex-col justify-between py-4">
               <motion.div
                 key={active}
@@ -366,7 +282,7 @@ const Projects = () => {
                 </div>
               </motion.div>
 
-              {/* Navigation Controls - Testimonials Style */}
+              {/* Navigation Controls */}
               <div className="flex items-center justify-between pt-12 lg:pt-0">
                 <div className="flex gap-4">
                   <button
@@ -416,16 +332,8 @@ const Projects = () => {
 
         {/* Background Effects */}
         <div className="absolute inset-0 pointer-events-none -z-10">
-          <div
-            className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full filter blur-[120px]
-            animate-pulse"
-            style={{ animationDuration: '8s' }}
-          />
-          <div
-            className="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full filter blur-[120px]
-            animate-pulse"
-            style={{ animationDuration: '10s', animationDelay: '2s' }}
-          />
+          <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full filter blur-[120px]" />
+          <div className="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full filter blur-[120px]" />
         </div>
       </section>
 

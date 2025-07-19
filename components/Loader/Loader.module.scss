@@ -112,14 +112,14 @@
 }
 
 .progress {
-  width: 9rem;
+  width: 12rem;
   margin: 0 auto;
   border-radius: 0.5rem;
-  height: 0.3rem;
+  height: 0.4rem;
   position: absolute;
   top: 63%;
   left: 50%;
-  margin-left: -4rem;
+  margin-left: -6rem;
   background-color: #1e1b20;
   overflow: hidden;
   animation-name: fadeAppear;
@@ -131,15 +131,26 @@
     top: 0;
     display: block;
     border-radius: 0.5rem;
-    height: 0.3rem;
+    height: 0.4rem;
     width: 100%;
     left: -100%;
     background-image: linear-gradient(to right, #8b31ff, #7000ff);
     animation-name: load;
-    animation-duration: 1.7s; //1.7s
-    animation-delay: 1s;
+    animation-duration: 2.5s;
+    animation-delay: 0.5s;
     animation-iteration-count: infinite;
   }
+}
+
+.loadingText {
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #8b31ff;
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  animation: fadeInOut 2s infinite;
 }
 
 @keyframes fadeAppear {
@@ -240,4 +251,9 @@
   100% {
     transform: translate(1px, -2px) rotate(-1deg);
   }
+}
+
+@keyframes fadeInOut {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
 }
