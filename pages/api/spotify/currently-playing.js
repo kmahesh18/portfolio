@@ -1,7 +1,6 @@
 const CLIENT_ID = '775baf2176a0426d99dc852bf98772d2';
 const CLIENT_SECRET = '797a5608ff4c471a8d68ffaa2b6139e2';
-const REFRESH_TOKEN = "AQByGL9DzduxOg5vtgsmU-cYgoyPq8RsyLwlrdWv2gnTygeSX2Jz-A5sORC0yWD-wgUPp79Cq3ToJaefexaMr9N-qA-uBKtesr9QsPf6NWHrdN2eEMfcFG5ojhMj9_e6teg";
-const access_token="BQDSKqBs3lFZ2hhEhoaXKQwGE4xy38-ne52Gmy7Vv5CMwRKLlJA0jzoDyATwSaZp4aFY9YdJ47jzzPX2Y52XPYca5BsWysGmlqHcB1tEBcJttL-TqR6jyM_lnFBaBX_0jStJ29nTLSckqOlNv2Q8lioEIg48afIVQjYSqvHhzRqispcM3nS-4k5KOH2UGkgiRLrNxx5xlKCxggqMpjtQIwYLl6PTDnGaoYoPQnVKa2XhHOkgy8JCRQeN";
+const REFRESH_TOKEN = "AQDGy5VMW9TEOqzXrxMfIJ5filIFzV02C-__DJXgd7f8lTPNZ_m9w8ZpDIYZ0UQOSI4NkxB4qSE8ZM7r3RKBac0CwVz2RPzPiHDT0XiC1bUGi2hS6_1RXRj9Bz5Egobmfig";
 
 const getAccessToken = async () => {
   const response = await fetch('https://accounts.spotify.com/api/token', {
@@ -23,12 +22,21 @@ export default async function handler(req, res) {
   try {
     if (!REFRESH_TOKEN) {
       return res.status(200).json({ 
+        connected: false,
         isPlaying: false, 
         error: 'Spotify not connected' 
       });
     }
 
     const { access_token } = await getAccessToken();
+
+    if (!access_token) {
+      return res.status(200).json({ 
+        connected: false,
+        isPlaying: false, 
+        error: 'Failed to get access token' 
+      });
+    }
 
     const response = await fetch('https://api.spotify.com/v1/me/player/currently-playing', {
       headers: {
@@ -49,6 +57,7 @@ export default async function handler(req, res) {
         if (recentData.items && recentData.items.length > 0) {
           const track = recentData.items[0].track;
           return res.status(200).json({
+            connected: true,
             isPlaying: false,
             name: track.name,
             artist: track.artists.map(artist => artist.name).join(', '),
@@ -59,16 +68,25 @@ export default async function handler(req, res) {
         }
       }
 
-      return res.status(200).json({ isPlaying: false });
+      return res.status(200).json({ 
+        connected: true,
+        isPlaying: false,
+        message: 'No track currently playing' 
+      });
     }
 
     const song = await response.json();
 
     if (!song.item) {
-      return res.status(200).json({ isPlaying: false });
+      return res.status(200).json({ 
+        connected: true,
+        isPlaying: false,
+        message: 'No track data available' 
+      });
     }
 
     const data = {
+      connected: true,
       isPlaying: song.is_playing,
       name: song.item.name,
       artist: song.item.artists.map(artist => artist.name).join(', '),
@@ -80,6 +98,10 @@ export default async function handler(req, res) {
     res.status(200).json(data);
   } catch (error) {
     console.error('Error fetching currently playing:', error);
-    res.status(500).json({ error: 'Failed to fetch currently playing track' });
+    res.status(500).json({ 
+      connected: false,
+      isPlaying: false,
+      error: 'Failed to fetch currently playing track' 
+    });
   }
 }
