@@ -6,6 +6,20 @@ const Projects = () => {
   const targetSection = useRef(null);
   const [active, setActive] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  // Add a state to track if we're on a mobile device
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if device is mobile on mount
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % PROJECTS.length);
@@ -20,6 +34,8 @@ const Projects = () => {
   };
 
   const randomRotateY = () => {
+    // Return 0 for mobile to avoid rotation animations
+    if (isMobile) return 0;
     return Math.floor(Math.random() * 21) - 10;
   };
 
@@ -64,29 +80,29 @@ const Projects = () => {
                     <motion.div
                       key={project.name}
                       initial={{
-                        opacity: 0,
-                        scale: 0.9,
-                        z: -100,
+                        opacity: 1, // Changed from 0 to remove transparency effect
+                        scale: isMobile ? 0.95 : 0.9,
+                        z: isMobile ? 0 : -100,
                         rotate: randomRotateY(),
                       }}
                       animate={{
-                        opacity: isActive(index) ? 1 : 0.7,
+                        opacity: 1, // Set to 1 for all states to remove transparency
                         scale: isActive(index) ? 1 : 0.95,
-                        z: isActive(index) ? 0 : -100,
+                        z: isMobile ? 0 : (isActive(index) ? 0 : -100),
                         rotate: isActive(index) ? 0 : randomRotateY(),
                         zIndex: isActive(index)
                           ? 40
                           : PROJECTS.length + 2 - index,
-                        y: isActive(index) ? [0, -20, 0] : 0,
+                        y: isActive(index) ? (isMobile ? 0 : [0, -20, 0]) : 0,
                       }}
                       exit={{
-                        opacity: 0,
-                        scale: 0.9,
-                        z: 100,
+                        opacity: isMobile ? 1 : 0, // Remove fade out effect on mobile
+                        scale: isMobile ? 0.95 : 0.9,
+                        z: isMobile ? 0 : 100,
                         rotate: randomRotateY(),
                       }}
                       transition={{
-                        duration: 0.6,
+                        duration: isMobile ? 0.4 : 0.6, // Slightly faster on mobile
                         ease: "easeInOut",
                       }}
                       className="absolute inset-0 origin-bottom"
@@ -113,6 +129,7 @@ const Projects = () => {
                             className="h-full w-full object-cover object-center"
                             draggable={false}
                           />
+                          {/* Keep gradient overlay but simplify for mobile */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                           
                           {/* Quick Action Buttons */}
@@ -163,19 +180,19 @@ const Projects = () => {
               <motion.div
                 key={active}
                 initial={{
-                  y: 20,
-                  opacity: 0,
+                  y: isMobile ? 10 : 20, // Reduced movement on mobile
+                  opacity: isMobile ? 0.5 : 0, // Less transparency change on mobile
                 }}
                 animate={{
                   y: 0,
                   opacity: 1,
                 }}
                 exit={{
-                  y: -20,
-                  opacity: 0,
+                  y: isMobile ? -10 : -20, // Reduced movement on mobile
+                  opacity: isMobile ? 0.5 : 0, // Less transparency change on mobile
                 }}
                 transition={{
-                  duration: 0.3,
+                  duration: isMobile ? 0.2 : 0.3, // Faster transition on mobile
                   ease: "easeInOut",
                 }}
                 className="font-mono text-sm"
@@ -210,7 +227,7 @@ const Projects = () => {
                     <span className="text-orange-400 ml-2">&apos;Full Stack Developer&apos;,</span>
                   </div>
 
-                  {/* Description with animated text */}
+                  {/* Description with animated text - simplified for mobile */}
                   <div className="hover:translate-x-2 transition-transform duration-200">
                     <span className="text-[#4AE3B5]">description:</span>
                     <motion.div className="mt-4 text-lg text-cyan-400 dark:text-cyan-300 leading-relaxed">
@@ -219,9 +236,9 @@ const Projects = () => {
                         <motion.span
                           key={index}
                           initial={{
-                            filter: "blur(10px)",
-                            opacity: 0,
-                            y: 5,
+                            filter: isMobile ? "blur(0px)" : "blur(10px)", // No blur on mobile
+                            opacity: isMobile ? 0.8 : 0, // Less transparency on mobile
+                            y: isMobile ? 2 : 5, // Less movement on mobile
                           }}
                           animate={{
                             filter: "blur(0px)",
@@ -229,9 +246,9 @@ const Projects = () => {
                             y: 0,
                           }}
                           transition={{
-                            duration: 0.2,
+                            duration: isMobile ? 0.1 : 0.2, // Faster transition on mobile
                             ease: "easeInOut",
-                            delay: 0.02 * index,
+                            delay: isMobile ? Math.min(0.01 * index, 0.3) : 0.02 * index, // Cap delay on mobile
                           }}
                           className="inline-block hover:text-cyan-300 transition-colors duration-200"
                         >
@@ -330,10 +347,10 @@ const Projects = () => {
           </div>
         </div>
 
-        {/* Background Effects */}
+        {/* Background Effects - Simplified for mobile */}
         <div className="absolute inset-0 pointer-events-none -z-10">
-          <div className="absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full filter blur-[120px]" />
-          <div className="absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full filter blur-[120px]" />
+          <div className={`absolute top-1/4 -left-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full ${isMobile ? '' : 'filter blur-[120px]'}`} />
+          <div className={`absolute bottom-1/4 -right-1/4 w-[600px] h-[600px] bg-purple-500/6 rounded-full ${isMobile ? '' : 'filter blur-[120px]'}`} />
         </div>
       </section>
 

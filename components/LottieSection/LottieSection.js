@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import Image from "next/image";
@@ -145,6 +144,100 @@ const LottieSection = () => {
     fetchCurrentlyPlaying();
   };
 
+  // Add CSS animations to document head - client-side only
+  useEffect(() => {
+    // Only run in browser environment
+    if (typeof window !== 'undefined') {
+      const style = document.createElement('style');
+      style.textContent = `
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        @keyframes fadeInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        @keyframes fadeInRight {
+          from {
+            opacity: 0;
+            transform: translateX(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        
+        .fade-in-up {
+          animation: fadeInUp 0.6s ease-out forwards;
+          animation-delay: var(--delay, 0s);
+          opacity: 0;
+        }
+        
+        .fade-in-left {
+          animation: fadeInLeft 0.6s ease-out forwards;
+          opacity: 0;
+        }
+        
+        .fade-in-right {
+          animation: fadeInRight 0.6s ease-out forwards;
+          opacity: 0;
+        }
+        
+        .hover\\:scale-101:hover {
+          transform: scale(1.01);
+        }
+        
+        .hover\\:scale-102:hover {
+          transform: scale(1.02);
+        }
+        
+        .hover\\:scale-103:hover {
+          transform: scale(1.03);
+        }
+        
+        .hover\\:scale-105:hover {
+          transform: scale(1.05);
+        }
+        
+        .active\\:scale-95:active {
+          transform: scale(0.95);
+        }
+        
+        .active\\:scale-97:active {
+          transform: scale(0.97);
+        }
+        
+        .hover\\:rotate-360:hover {
+          transform: rotate(360deg);
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Cleanup function to remove style on unmount
+      return () => {
+        if (style.parentNode) {
+          document.head.removeChild(style);
+        }
+      };
+    }
+  }, []); // Empty dependency array means this runs once on mount
+
   return (
     <>
       {/* Section Spacing */}
@@ -162,12 +255,8 @@ const LottieSection = () => {
 
         <div className="max-w-7xl mx-auto px-6">
           {/* Header */}
-          <motion.div
-            className="text-center mb-16 animate-in"
-            initial={{ opacity: 0, y: -30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
+          <div
+            className="text-center mb-16 animate-in fade-in-up"
           >
             <h2 className="text-6xl font-bold gradient-text mb-4"
               style={{
@@ -180,18 +269,12 @@ const LottieSection = () => {
             <p className="text-gray-400 text-lg font-mono">
               Music fuels creativity ! Heres whats playing in my dev space
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             
             {/* Lottie Animation Side */}
-            <motion.div
-              className="animate-in"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
+            <div className="animate-in fade-in-left">
               <div className="relative">
                 <div
                   ref={lottieRef}
@@ -219,49 +302,15 @@ const LottieSection = () => {
                   ))}
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Spotify Integration Side */}
-            <motion.div
-              className="animate-in space-y-6"
-              initial={{ opacity: 0, x: 100, scale: 0.9 }}
-              whileInView={{ 
-                opacity: 1, 
-                x: 0, 
-                scale: 1,
-                transition: {
-                  duration: 1.2,
-                  delay: 0.3,
-                  ease: [0.25, 0.46, 0.45, 0.94], // Custom cubic-bezier for smooth easing
-                  staggerChildren: 0.15
-                }
-              }}
-              viewport={{ once: true, margin: "-10%" }}
-            >
+            <div className="animate-in space-y-6 fade-in-right">
               {/* Current Track Display - Updated */}
-              <motion.div 
-                className={`bg-gradient-to-br from-gray-900/90 to-black rounded-2xl p-4 border backdrop-blur-sm ${
+              <div 
+                className={`bg-gradient-to-br from-gray-900/90 to-black rounded-2xl p-4 border transition-all duration-300 hover:translate-y-[-5px] hover:shadow-lg animate-in fade-in-up ${
                   isConnected && currentTrack ? 'border-green-500/30 shadow-[0_25px_60px_rgba(29,185,84,0.2)]' : 'border-gray-500/30'
                 }`}
-                initial={{ opacity: 0, y: 30, rotateX: -15 }}
-                whileInView={{ 
-                  opacity: 1, 
-                  y: 0, 
-                  rotateX: 0,
-                  transition: {
-                    duration: 0.8,
-                    delay: 0.5,
-                    ease: "easeOut"
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.02,
-                  y: -5,
-                  boxShadow: currentTrack ? "0 35px 80px rgba(29,185,84,0.3)" : "0 15px 40px rgba(107,114,128,0.3)",
-                  borderColor: currentTrack ? "rgba(29,185,84,0.5)" : "rgba(107,114,128,0.5)",
-                  transition: { duration: 0.3, ease: "easeOut" }
-                }}
-                viewport={{ once: true }}
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-4">
@@ -284,26 +333,22 @@ const LottieSection = () => {
                     </span>
                   </div>
                   {isConnected && (
-                    <motion.button
+                    <button
                       onClick={handleRefresh}
-                      className="p-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 text-gray-400 hover:text-white transition-colors"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
+                      className="p-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 text-gray-400 hover:text-white transition-colors hover:scale-105 active:scale-95"
                       title="Refresh"
                     >
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                       </svg>
-                    </motion.button>
+                    </button>
                   )}
                 </div>
                 
                 {isConnected && currentTrack ? (
                   <div className="flex items-center gap-3">
-                    <motion.div 
-                      className="w-14 h-14 rounded-lg bg-gradient-to-br from-green-500/30 to-purple-500/30 flex items-center justify-center border border-green-500/20 overflow-hidden"
-                      whileHover={{ scale: 1.1, rotate: 2 }}
-                      transition={{ duration: 0.2 }}
+                    <div 
+                      className="w-14 h-14 rounded-lg bg-gradient-to-br from-green-500/30 to-purple-500/30 flex items-center justify-center border border-green-500/20 overflow-hidden hover:scale-105 transition-transform duration-200"
                     >
                       {currentTrack.image ? (
                         <Image 
@@ -319,36 +364,31 @@ const LottieSection = () => {
                           <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
                         </svg>
                       )}
-                    </motion.div>
+                    </div>
                     <div className="flex-1">
-                      <motion.h3 
-                        className="text-white font-semibold text-base truncate"
-                        whileHover={{ color: "#4ade80" }}
-                        transition={{ duration: 0.2 }}
+                      <h3 
+                        className="text-white font-semibold text-base truncate hover:text-green-400 transition-colors duration-200"
                       >
                         {currentTrack.name}
-                      </motion.h3>
-                      <motion.p 
-                        className="text-gray-400 truncate text-sm"
-                        whileHover={{ color: "#a3a3a3" }}
-                        transition={{ duration: 0.2 }}
+                      </h3>
+                      <p 
+                        className="text-gray-400 truncate text-sm hover:text-gray-300 transition-colors duration-200"
                       >
                         {currentTrack.artist}
-                      </motion.p>
+                      </p>
                       <p className="text-gray-500 text-xs truncate">{currentTrack.album}</p>
                     </div>
                     {isPlaying && (
                       <div className="flex items-center gap-1">
                         {[...Array(4)].map((_, i) => (
-                          <motion.div
+                          <div
                             key={i}
-                            className="w-1 bg-green-400 rounded-full animate-pulse"
+                            className="w-1 bg-green-400 rounded-full animate-pulse hover:scale-110 transition-transform"
                             style={{ 
                               height: `${12 + Math.random() * 12}px`,
                               animationDelay: `${i * 0.2}s`,
                               animationDuration: `${0.8 + Math.random() * 0.4}s`
                             }}
-                            whileHover={{ scale: 1.2 }}
                           />
                         ))}
                       </div>
@@ -369,147 +409,62 @@ const LottieSection = () => {
                 )}
 
                 {currentTrack?.songUrl && (
-                  <motion.a
+                  <a
                     href={currentTrack.songUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-3 px-3 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-xs font-semibold transition-all duration-200"
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    whileTap={{ scale: 0.98 }}
+                    className="inline-flex items-center gap-2 mt-3 px-3 py-2 bg-green-600 hover:bg-green-500 rounded-lg text-white text-xs font-semibold transition-all duration-200 hover:scale-105 active:scale-95 hover:translate-y-[-2px]"
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.599 0-.36.24-.66.54-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.242 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
                     </svg>
                     Open in Spotify
-                  </motion.a>
+                  </a>
                 )}
-              </motion.div>
+              </div>
 
               {/* Coding Stats */}
-              <motion.div 
-                className="grid grid-cols-2 gap-3"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ duration: 0.6, delay: 0.7 }}
-                viewport={{ once: true }}
-              >
-                <motion.div 
-                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20"
-                  initial={{ opacity: 0, x: -30, scale: 0.8 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    x: 0, 
-                    scale: 1,
-                    transition: {
-                      duration: 0.6,
-                      delay: 0.8,
-                      ease: "backOut"
-                    }
-                  }}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    y: -3,
-                    borderColor: "rgba(139,92,246,0.4)",
-                    boxShadow: "0 15px 35px rgba(139,92,246,0.25)",
-                    transition: { duration: 0.2 }
-                  }}
-                  viewport={{ once: true }}
+              <div className="grid grid-cols-2 gap-3 animate-in fade-in-up" style={{ "--delay": "0.2s" }}>
+                <div 
+                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20 hover:scale-105 hover:translate-y-[-3px] hover:shadow-lg hover:border-purple-500/40 transition-all duration-200"
                 >
-                  <motion.div 
-                    className="text-xl font-bold text-purple-400 mb-1"
-                    whileHover={{ scale: 1.1 }}
+                  <div 
+                    className="text-xl font-bold text-purple-400 mb-1 hover:scale-105 transition-transform"
                   >
                     10+
-                  </motion.div>
+                  </div>
                   <div className="text-gray-400 text-xs font-mono">Hours Coded</div>
-                </motion.div>
-                <motion.div 
-                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-green-500/20"
-                  initial={{ opacity: 0, x: 30, scale: 0.8 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    x: 0, 
-                    scale: 1,
-                    transition: {
-                      duration: 0.6,
-                      delay: 0.9,
-                      ease: "backOut"
-                    }
-                  }}
-                  whileHover={{ 
-                    scale: 1.05, 
-                    y: -3,
-                    borderColor: "rgba(34,197,94,0.4)",
-                    boxShadow: "0 15px 35px rgba(34,197,94,0.25)",
-                    transition: { duration: 0.2 }
-                  }}
-                  viewport={{ once: true }}
+                </div>
+                <div 
+                  className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-green-500/20 hover:scale-105 hover:translate-y-[-3px] hover:shadow-lg hover:border-green-500/40 transition-all duration-200"
                 >
-                  <motion.div 
-                    className="text-xl font-bold text-green-400 mb-1"
-                    whileHover={{ scale: 1.1 }}
+                  <div 
+                    className="text-xl font-bold text-green-400 mb-1 hover:scale-105 transition-transform"
                   >
                     ∞
-                  </motion.div>
+                  </div>
                   <div className="text-gray-400 text-xs font-mono">Spotify Tracks</div>
-                </motion.div>
-              </motion.div>
+                </div>
+              </div>
 
               {/* Follow My Spotify */}
-              <motion.div 
-                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20"
-                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                whileInView={{ 
-                  opacity: 1, 
-                  y: 0, 
-                  scale: 1,
-                  transition: {
-                    duration: 0.7,
-                    delay: 1.0,
-                    ease: "easeOut"
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.02, 
-                  y: -2,
-                  borderColor: "rgba(139,92,246,0.4)",
-                  boxShadow: "0 20px 45px rgba(139,92,246,0.2)",
-                  transition: { duration: 0.3 }
-                }}
-                viewport={{ once: true }}
+              <div 
+                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20 hover:scale-102 hover:translate-y-[-2px] hover:shadow-lg hover:border-purple-500/40 transition-all duration-300 animate-in fade-in-up"
+                style={{ "--delay": "0.3s" }}
               >
-                <motion.h4 
-                  className="text-white font-semibold mb-2 text-center text-sm"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 1.2 }}
+                <h4 
+                  className="text-white font-semibold mb-2 text-center text-sm animate-in fade-in-up"
+                  style={{ "--delay": "0.4s" }}
                 >
                   Follow My Spotify
-                </motion.h4>
+                </h4>
                 <div className="flex justify-center">
-                  <motion.a
+                  <a
                     href="https://open.spotify.com/user/31xbtibxhkueqre6tx2yj5bo5msq?si=hVVl6_apSvSI9JXaQMLbjA"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-full text-white font-semibold transition-all duration-200 text-xs"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ 
-                      opacity: 1, 
-                      scale: 1,
-                      transition: {
-                        duration: 0.4,
-                        delay: 1.3,
-                        ease: "backOut"
-                      }
-                    }}
-                    whileHover={{ 
-                      scale: 1.05,
-                      y: -2,
-                      boxShadow: "0 10px 25px rgba(34,197,94,0.3)",
-                      transition: { duration: 0.2 }
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    viewport={{ once: true }}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 rounded-full text-white font-semibold transition-all duration-200 text-xs hover:scale-105 hover:translate-y-[-2px] hover:shadow-md active:scale-95 animate-in fade-in-up"
+                    style={{ "--delay": "0.5s" }}
                   >
                     <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.599 0-.36.24-.66.54-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.242 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
@@ -518,54 +473,32 @@ const LottieSection = () => {
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                  </motion.a>
+                  </a>
                 </div>
-                <motion.p 
-                  className="text-gray-400 text-xs text-center mt-2"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: 1.5 }}
+                <p 
+                  className="text-gray-400 text-xs text-center mt-2 animate-in fade-in-up"
+                  style={{ "--delay": "0.6s" }}
                 >
                   Discover my playlists & music taste
-                </motion.p>
-              </motion.div>
+                </p>
+              </div>
 
               {/* Connect Spotify / Status Display - Updated */}
               {!isConnected ? (
-                <motion.button
+                <button
                   onClick={handleSpotifyLogin}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-all duration-200 text-sm"
-                  initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                  whileInView={{ 
-                    opacity: 1, 
-                    y: 0, 
-                    scale: 1,
-                    transition: {
-                      duration: 0.6,
-                      delay: 1.6,
-                      ease: "backOut"
-                    }
-                  }}
-                  whileHover={{ 
-                    scale: 1.03, 
-                    y: -3, 
-                    boxShadow: "0 15px 40px rgba(34,197,94,0.4)",
-                    transition: { duration: 0.2 }
-                  }}
-                  whileTap={{ scale: 0.97 }}
-                  viewport={{ once: true }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-green-600 hover:bg-green-500 rounded-lg text-white font-semibold transition-all duration-200 text-sm hover:scale-103 hover:translate-y-[-3px] hover:shadow-lg active:scale-97 animate-in fade-in-up"
+                  style={{ "--delay": "0.7s" }}
                 >
-                  <motion.svg 
-                    className="w-5 h-5" 
+                  <svg 
+                    className="w-5 h-5 transition-transform duration-500 hover:rotate-360" 
                     fill="currentColor" 
                     viewBox="0 0 24 24"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
                   >
                     <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.84-.179-.84-.599 0-.36.24-.66.54-.78 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.242 1.019zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
-                  </motion.svg>
+                  </svg>
                   Connect Spotify for Live Updates
-                </motion.button>
+                </button>
               ) : (
                 <></>
                 // <motion.div 
@@ -633,48 +566,24 @@ const LottieSection = () => {
               )}
 
               {/* Developer Quote */}
-              <motion.div 
-                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20"
-                initial={{ opacity: 0, y: 40, rotateX: -10 }}
-                whileInView={{ 
-                  opacity: 1, 
-                  y: 0, 
-                  rotateX: 0,
-                  transition: {
-                    duration: 0.8,
-                    delay: 1.9,
-                    ease: "easeOut"
-                  }
-                }}
-                whileHover={{ 
-                  scale: 1.01, 
-                  y: -2,
-                  borderColor: "rgba(139,92,246,0.4)",
-                  boxShadow: "0 20px 50px rgba(139,92,246,0.2)",
-                  transition: { duration: 0.3 }
-                }}
-                viewport={{ once: true }}
+              <div 
+                className="bg-gradient-to-br from-gray-900/60 to-black/60 rounded-xl p-3 border border-purple-500/20 hover:scale-101 hover:translate-y-[-2px] hover:shadow-lg hover:border-purple-500/40 transition-all duration-300 animate-in fade-in-up"
+                style={{ "--delay": "0.8s" }}
               >
-                <motion.blockquote 
-                  className="text-gray-300 italic font-mono text-xs"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  transition={{ duration: 0.6, delay: 2.1 }}
-                  whileHover={{ color: "#d1d5db" }}
+                <blockquote 
+                  className="text-gray-300 italic font-mono text-xs hover:text-gray-200 transition-colors animate-in fade-in-up"
+                  style={{ "--delay": "0.9s" }}
                 >
                   Code flows better with the right soundtrack. Every bug fix has its beat, every feature its rhythm.
-                </motion.blockquote>
-                <motion.div 
-                  className="text-purple-400 text-right mt-1 text-xs"
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: 2.3 }}
-                  whileHover={{ color: "#a855f7" }}
+                </blockquote>
+                <div 
+                  className="text-purple-400 text-right mt-1 text-xs hover:text-purple-300 transition-colors animate-in fade-in-right"
+                  style={{ "--delay": "1s" }}
                 >
                   - Mahesh Kumar
-                </motion.div>
-              </motion.div>
-            </motion.div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
